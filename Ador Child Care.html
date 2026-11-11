@@ -1,0 +1,753 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Ador Child Care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a phone frame centred on a soft stage (desktop) that becomes the full screen on phones; one scroll area per screen, tab bar with a raised SOS button. */
+:root{
+  --page:#E4EEEC; --bg:#F4F8F7; --surface:#FFFFFF; --surface-2:#EAF2F0; --line:#DAE6E3;
+  --fg:#11302B; --muted:#5A726D; --frame:#16302C;
+  --primary:#0B7A6A; --primary-ink:#FFFFFF; --primary-soft:#D5EEE8;
+  --accent:#EF7A55; --accent-ink:#FFFFFF; --accent-soft:#FDE5DB;
+  --ok:#17834A; --ok-soft:#DDF3E6; --warn:#A86A00; --warn-soft:#FBEFD3; --crit:#C93838; --crit-soft:#FBE1E1;
+  --shadow:0 10px 30px -12px rgba(17,48,43,.25);
+  --display:"Baloo Da 2","Hind Siliguri",system-ui,sans-serif;
+  --body:"Hind Siliguri",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --page:#081110; --bg:#0D1817; --surface:#142321; --surface-2:#1B2D2A; --line:#243A37;
+  --fg:#E3F1EE; --muted:#93AAA5; --frame:#2A403C;
+  --primary:#3EC4AE; --primary-ink:#052520; --primary-soft:#123B35;
+  --accent:#FF977A; --accent-ink:#2A0E05; --accent-soft:#3D2219;
+  --ok:#4FD08A; --ok-soft:#14352A; --warn:#F2B84B; --warn-soft:#3A2C10; --crit:#FF7A7A; --crit-soft:#3E1B1B;
+  --shadow:0 10px 30px -12px rgba(0,0,0,.6); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --page:#081110; --bg:#0D1817; --surface:#142321; --surface-2:#1B2D2A; --line:#243A37;
+  --fg:#E3F1EE; --muted:#93AAA5; --frame:#2A403C;
+  --primary:#3EC4AE; --primary-ink:#052520; --primary-soft:#123B35;
+  --accent:#FF977A; --accent-ink:#2A0E05; --accent-soft:#3D2219;
+  --ok:#4FD08A; --ok-soft:#14352A; --warn:#F2B84B; --warn-soft:#3A2C10; --crit:#FF7A7A; --crit-soft:#3E1B1B;
+  --shadow:0 10px 30px -12px rgba(0,0,0,.6); color-scheme:dark }
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--page);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+input,select,textarea{font:inherit;color:var(--fg)}
+:focus-visible{outline:2.5px solid var(--primary);outline-offset:2px;border-radius:10px}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.15;text-wrap:balance}
+
+.stage{height:100%;display:flex;align-items:center;justify-content:center;gap:56px;padding:24px}
+.device{width:390px;height:min(844px,calc(100vh - 48px));border:10px solid var(--frame);border-radius:48px;overflow:hidden;position:relative;display:flex;flex-direction:column;background:var(--bg);box-shadow:0 40px 80px -30px rgba(10,40,35,.45);flex-shrink:0}
+.statusbar{display:flex;justify-content:space-between;align-items:center;padding:12px 26px 4px;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;background:var(--bg)}
+.statusbar .notch{width:96px;height:24px;border-radius:14px;background:var(--frame)}
+#app{flex:1;min-height:0;display:flex;flex-direction:column;position:relative}
+.scroll{flex:1;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+.pad{padding-left:16px;padding-right:16px}
+
+.side{max-width:330px}
+.side h1{font-size:44px;font-weight:800;color:var(--fg);display:flex;gap:14px;align-items:center}
+.side .bn{font-size:28px;color:var(--primary);font-weight:700;margin-top:-4px}
+.side p{color:var(--muted)}
+.side ul{padding:0;margin:18px 0;list-style:none;display:grid;gap:10px}
+.side li{display:flex;gap:10px;align-items:flex-start;font-size:14px}
+.side li i{flex:none;width:22px;height:22px;border-radius:8px;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:700}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.side .seg{margin-top:8px;background:var(--surface)}
+@media (max-width:980px){.side{display:none}}
+@media (max-width:640px){
+  .stage{padding:0}
+  .device{width:100%;height:100%;border:0;border-radius:0;box-shadow:none}
+  .statusbar{display:none}
+}
+
+/* type */
+.eyebrow{font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+.muted{color:var(--muted)}
+.sm{font-size:13px}
+.num{font-variant-numeric:tabular-nums}
+
+/* top bars */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px}
+.iconbtn{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);position:relative;flex:none}
+.iconbtn .dot{position:absolute;top:9px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--accent);border:2px solid var(--surface)}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:22px}
+.screen-head{padding:8px 16px 12px}
+.screen-head h1{font-size:28px;font-weight:700}
+
+/* search */
+.search{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:0 14px;height:50px;color:var(--muted);width:100%;text-align:left}
+.search input{border:0;outline:0;background:transparent;flex:1;min-width:0;height:100%;font-size:15px}
+.search:focus-within{border-color:var(--primary)}
+
+/* chips */
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 16px 4px}
+.chips::-webkit-scrollbar{display:none}
+.chip-btn{flex:none;height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:500;font-size:14px;white-space:nowrap}
+.chip-btn[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+
+/* status pills */
+.pill{display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 9px;border-radius:8px;font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill b{font-weight:700}
+.s-ok{background:var(--ok-soft);color:var(--ok)}
+.s-few{background:var(--warn-soft);color:var(--warn)}
+.s-full{background:var(--crit-soft);color:var(--crit)}
+.flash{animation:flash 1.4s ease}
+@keyframes flash{0%{box-shadow:0 0 0 0 var(--primary)}30%{box-shadow:0 0 0 4px var(--primary-soft)}100%{box-shadow:0 0 0 0 transparent}}
+
+/* sections */
+.section{margin-top:22px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;padding:0 16px;margin-bottom:10px}
+.sec-head h2{font-size:19px;font-weight:700}
+.link{color:var(--primary);font-weight:600;font-size:14px}
+
+/* home */
+.greet{padding:4px 16px 14px}
+.greet h1{font-size:27px;font-weight:700}
+.sos-card{margin:16px 16px 0;border-radius:24px;padding:18px;background:var(--accent);color:var(--accent-ink);display:flex;gap:14px;align-items:center;position:relative;overflow:hidden;width:calc(100% - 32px);text-align:left}
+.sos-card::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;border:24px solid rgba(255,255,255,.14)}
+.sos-card .ring{width:52px;height:52px;border-radius:18px;background:rgba(255,255,255,.22);display:grid;place-items:center;flex:none}
+.sos-card h3{font-size:18px;font-weight:700}
+.sos-card p{margin:0;font-size:13.5px;opacity:.92}
+.stats{margin:14px 16px 0;background:var(--surface);border:1px solid var(--line);border-radius:20px;display:grid;grid-template-columns:repeat(3,1fr)}
+.stat{padding:14px 10px 12px;text-align:center}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat .v{font-family:var(--display);font-size:28px;font-weight:700;line-height:1;color:var(--primary);font-variant-numeric:tabular-nums}
+.stat .k{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.3}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px var(--ok-soft);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.4}}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 16px}
+.cat{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.cat .ico{width:100%;aspect-ratio:1;max-width:100%;border-radius:20px;display:grid;place-items:center;background:var(--primary-soft);color:var(--primary)}
+.cat:nth-child(2) .ico{background:var(--accent-soft);color:var(--accent)}
+.cat:nth-child(4) .ico{background:var(--surface-2);color:var(--fg)}
+.hscroll{display:flex;gap:12px;overflow-x:auto;padding:2px 16px 6px;scrollbar-width:none;scroll-snap-type:x mandatory}
+.hscroll::-webkit-scrollbar{display:none}
+.mini{flex:none;width:244px;scroll-snap-align:start;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:10px}
+.mini h3{font-size:16px;font-weight:700;font-family:var(--body)}
+.tip-hero{margin:0 16px;border-radius:24px;padding:18px;background:var(--primary);color:var(--primary-ink);display:block;width:calc(100% - 32px);text-align:left;position:relative;overflow:hidden}
+.tip-hero h3{font-size:20px;font-weight:700;margin:6px 0 6px;max-width:85%}
+.tip-hero p{margin:0;font-size:13.5px;opacity:.9;max-width:85%}
+.tip-hero .big-ico{position:absolute;right:-10px;bottom:-14px;opacity:.18}
+.tip-hero .eyebrow{color:inherit;opacity:.85}
+
+/* lists */
+.list{display:grid;gap:12px;padding:0 16px}
+.hcard{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:14px;display:grid;gap:12px;text-align:left;width:100%;position:relative}
+.hcard-top{display:flex;gap:12px;align-items:flex-start}
+.avatar{width:46px;height:46px;border-radius:14px;flex:none;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:14px;background:var(--primary-soft);color:var(--primary)}
+.avatar.pv{background:var(--accent-soft);color:var(--accent)}
+.hc-body{flex:1;min-width:0}
+.hc-body h3{font-family:var(--body);font-size:16px;font-weight:700;line-height:1.3}
+.meta{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:13px;flex-wrap:wrap}
+.meta svg{flex:none}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.save{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:12px;display:grid;place-items:center;color:var(--muted)}
+.save[aria-pressed="true"]{color:var(--accent)}
+.save[aria-pressed="true"] svg{fill:var(--accent)}
+.tag{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:6px;background:var(--surface-2);color:var(--muted)}
+.empty{padding:40px 24px;text-align:center;color:var(--muted)}
+.count-line{padding:10px 16px 8px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between}
+
+/* detail */
+.d-hero{padding:4px 16px 18px}
+.d-hero h1{font-size:26px;font-weight:700;margin:12px 0 6px}
+.units{display:grid;gap:10px;padding:0 16px}
+.unit{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:14px 16px;display:grid;gap:8px}
+.unit-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.unit-name{font-weight:700;font-size:16px}
+.unit-desc{font-size:12.5px;color:var(--muted)}
+.unit-count{display:flex;align-items:baseline;gap:8px}
+.unit-count .big{font-family:var(--display);font-size:34px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.bar{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;transition:width .6s ease}
+.bar.s-ok i{background:var(--ok)} .bar.s-few i{background:var(--warn)} .bar.s-full i{background:var(--crit)}
+.bar.s-ok,.bar.s-few,.bar.s-full{background:var(--surface-2)}
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 16px}
+.act{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border-radius:18px;background:var(--surface);border:1px solid var(--line);font-size:13px;font-weight:600}
+.act.primary{background:var(--primary);color:var(--primary-ink);border-color:var(--primary)}
+.info{margin:0 16px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:4px 16px}
+.info-row{display:flex;gap:12px;align-items:center;padding:12px 0;font-size:14px}
+.info-row+.info-row{border-top:1px solid var(--line)}
+.info-row svg{color:var(--primary);flex:none}
+.fac{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px}
+.fac span{padding:6px 12px;border-radius:12px;background:var(--surface-2);font-size:13px;font-weight:500}
+
+/* doctors */
+.dcard{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:14px;display:flex;gap:12px;text-align:left;width:100%;align-items:flex-start}
+.dav{width:54px;height:54px;border-radius:18px;flex:none;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:18px;color:var(--fg)}
+.slot-chip{display:inline-flex;gap:5px;align-items:center;font-size:12.5px;font-weight:600;color:var(--primary);background:var(--primary-soft);padding:3px 9px;border-radius:8px;margin-top:8px}
+.slot-chip.later{color:var(--muted);background:var(--surface-2)}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;font-size:14px;gap:12px}
+.switch{width:46px;height:28px;border-radius:99px;background:var(--line);position:relative;flex:none;transition:background .2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+.switch[aria-checked="true"]{background:var(--primary)}
+.switch[aria-checked="true"]::after{transform:translateX(18px)}
+.doc-hero{text-align:center;padding:4px 16px 16px}
+.doc-hero .dav{width:88px;height:88px;border-radius:28px;font-size:30px;margin:6px auto 12px}
+.doc-hero h1{font-size:24px;font-weight:700}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);margin:0 16px;background:var(--surface);border:1px solid var(--line);border-radius:20px}
+.trio div{padding:12px 6px;text-align:center}
+.trio div+div{border-left:1px solid var(--line)}
+.trio b{display:block;font-family:var(--display);font-size:20px;font-variant-numeric:tabular-nums}
+.trio span{font-size:12px;color:var(--muted)}
+.days{display:flex;gap:8px;overflow-x:auto;padding:2px 16px 4px;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.day{flex:none;width:62px;padding:10px 0;border-radius:16px;border:1px solid var(--line);background:var(--surface);text-align:center;line-height:1.2}
+.day b{display:block;font-family:var(--display);font-size:20px;margin-top:2px}
+.day span{font-size:12px;color:var(--muted)}
+.day[aria-pressed="true"]{background:var(--primary);color:var(--primary-ink);border-color:var(--primary)}
+.day[aria-pressed="true"] span{color:inherit;opacity:.85}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 16px}
+.slot{height:44px;border-radius:14px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
+.slot[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.slot:disabled{opacity:.45;text-decoration:line-through;cursor:not-allowed}
+.sticky-cta{padding:12px 16px 14px;background:var(--bg);border-top:1px solid var(--line)}
+.btn{height:52px;width:100%;border-radius:16px;background:var(--primary);color:var(--primary-ink);font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:var(--surface-2);color:var(--fg)}
+.btn.accent{background:var(--accent);color:var(--accent-ink)}
+
+/* tips */
+.tcard{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:12px;display:flex;gap:14px;text-align:left;width:100%;align-items:center}
+.tthumb{width:74px;height:74px;border-radius:16px;flex:none;display:grid;place-items:center}
+.tc-newborn{background:var(--primary-soft);color:var(--primary)}
+.tc-nutrition{background:var(--ok-soft);color:var(--ok)}
+.tc-vaccine{background:var(--surface-2);color:var(--fg)}
+.tc-illness{background:var(--accent-soft);color:var(--accent)}
+.tc-safety{background:var(--warn-soft);color:var(--warn)}
+.tcard h3{font-family:var(--body);font-size:15.5px;font-weight:700;line-height:1.35}
+.feature{margin:0 16px 14px;border-radius:24px;overflow:hidden;background:var(--surface);border:1px solid var(--line);text-align:left;display:block;width:calc(100% - 32px)}
+.feature .art{height:150px;display:grid;place-items:center}
+.feature .txt{padding:14px 16px 16px}
+.feature h3{font-size:20px;font-weight:700;margin:4px 0}
+.article{padding:0 16px 24px}
+.article .art{height:180px;border-radius:24px;display:grid;place-items:center;margin-bottom:16px}
+.article h1{font-size:26px;font-weight:700;margin:6px 0 10px}
+.article .lede{font-size:16px;color:var(--fg);margin:0 0 14px}
+.points{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.points li{display:flex;gap:12px;align-items:flex-start;max-width:65ch}
+.points li i{flex:none;width:26px;height:26px;border-radius:9px;display:grid;place-items:center;background:var(--primary-soft);color:var(--primary);font-style:normal;font-size:13px;font-weight:700;font-family:var(--display)}
+.warn-box{margin-top:18px;background:var(--crit-soft);border-radius:20px;padding:14px 16px}
+.warn-box h3{font-family:var(--body);font-size:15px;color:var(--crit);display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.warn-box ul{margin:0;padding-left:20px;display:grid;gap:4px;font-size:14px}
+.byline{display:flex;gap:10px;align-items:center;padding:12px;border-radius:16px;background:var(--surface);border:1px solid var(--line);margin-bottom:16px}
+.byline .dav{width:40px;height:40px;border-radius:12px;font-size:14px}
+
+/* emergency */
+.em-head{background:var(--crit);color:#fff;padding:12px 16px 22px}
+.em-head .iconbtn{background:rgba(255,255,255,.16);border-color:transparent;color:#fff}
+.em-head h1{font-size:30px;font-weight:800;margin-top:12px}
+.hotline{margin:-12px 16px 0;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow)}
+.hotline .big{font-family:var(--display);font-size:38px;font-weight:800;color:var(--crit);line-height:1;font-variant-numeric:tabular-nums;user-select:all}
+.hotline.secondary{margin-top:10px;box-shadow:none}
+.hotline.secondary .big{font-size:28px;color:var(--fg)}
+.copy-btn{margin-left:auto;height:40px;padding:0 14px;border-radius:12px;background:var(--surface-2);font-weight:600;font-size:13px;display:flex;align-items:center;gap:6px;flex:none}
+.steps{list-style:none;margin:0 16px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:20px;display:grid;gap:10px}
+.steps li{display:flex;gap:10px;font-size:14px}
+.steps svg{color:var(--ok);flex:none;margin-top:2px}
+
+/* profile */
+.pcard{margin:0 16px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px;display:flex;gap:14px;align-items:center}
+.child{margin:12px 16px 0;border-radius:22px;padding:16px;background:var(--primary-soft);display:flex;gap:14px;align-items:center}
+.child .dav{background:var(--surface);color:var(--primary)}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--surface-2);border-radius:14px;padding:4px;gap:4px}
+.seg button{height:38px;border-radius:11px;font-weight:600;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--surface);box-shadow:0 1px 4px rgba(0,0,0,.12);color:var(--primary)}
+.settings{margin:0 16px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:4px 16px}
+.set-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0}
+.set-row+.set-row{border-top:1px solid var(--line)}
+.notice{margin:0 16px;padding:14px 16px;border-radius:18px;border:1px dashed var(--line);color:var(--muted);font-size:13.5px}
+
+/* notifications */
+.nrow{display:flex;gap:12px;padding:14px 16px;align-items:flex-start;text-align:left;width:100%}
+.nrow+.nrow{border-top:1px solid var(--line)}
+.nico{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;flex:none}
+
+/* tab bar */
+.tabbar{display:grid;grid-template-columns:repeat(5,1fr);align-items:end;background:var(--surface);border-top:1px solid var(--line);padding:6px 6px 8px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:600;color:var(--muted);padding:4px 0}
+.tab[aria-current="page"]{color:var(--primary)}
+.tab-sos{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:700;color:var(--crit)}
+.tab-sos span.c{width:56px;height:56px;border-radius:20px;background:var(--crit);color:#fff;display:grid;place-items:center;margin-top:-26px;box-shadow:0 8px 20px -6px var(--crit);border:4px solid var(--surface)}
+
+/* sheet */
+.scrim{position:absolute;inset:0;background:rgba(5,20,18,.45);display:flex;align-items:flex-end;z-index:30;animation:fade .2s}
+.sheet{background:var(--bg);width:100%;border-radius:28px 28px 0 0;padding:10px 16px 20px;max-height:88%;overflow-y:auto;animation:up .28s cubic-bezier(.2,.8,.2,1)}
+.grab{width:40px;height:5px;border-radius:9px;background:var(--line);margin:0 auto 14px}
+.sheet h2{font-size:22px;font-weight:700}
+.field{display:grid;gap:6px;margin-top:12px}
+.field label{font-size:13px;font-weight:600;color:var(--muted)}
+.field input,.field select,.field textarea{height:48px;border-radius:14px;border:1px solid var(--line);background:var(--surface);padding:0 14px;width:100%}
+.field textarea{height:76px;padding:10px 14px;resize:none}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.success{text-align:center;padding:6px 4px 4px}
+.success .tick{width:72px;height:72px;border-radius:24px;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center;margin:6px auto 14px}
+.summary{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:4px 14px;margin:14px 0;text-align:left}
+.summary div{display:flex;justify-content:space-between;gap:10px;padding:10px 0;font-size:14px}
+.summary div+div{border-top:1px solid var(--line)}
+.summary span{color:var(--muted)}
+.toast{position:absolute;left:16px;right:16px;bottom:96px;z-index:40;background:var(--fg);color:var(--bg);border-radius:14px;padding:12px 14px;font-size:14px;font-weight:500;display:flex;gap:8px;align-items:center;animation:up .25s}
+@keyframes up{from{transform:translateY(24px);opacity:0}}
+@keyframes fade{from{opacity:0}}
+
+/* splash */
+.splash{flex:1;display:flex;flex-direction:column;padding:24px 22px 22px;background:var(--bg);position:relative;overflow:hidden}
+.splash .orb{position:absolute;border-radius:50%}
+.splash .o1{width:320px;height:320px;background:var(--primary-soft);top:-90px;right:-120px}
+.splash .o2{width:180px;height:180px;background:var(--accent-soft);top:180px;left:-90px}
+.splash-main{position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.splash h1{font-size:52px;font-weight:800;line-height:1;margin-top:16px}
+.splash h1 small{display:block;font-size:30px;color:var(--primary);font-weight:700;margin-top:6px}
+.splash .tagline{font-family:var(--display);font-size:20px;font-weight:600}
+.splash p{color:var(--muted);margin:0;max-width:30ch}
+.splash-foot{position:relative;display:grid;gap:12px}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<div class="stage">
+  <div class="device" id="device">
+    <div class="statusbar" aria-hidden="true"><span id="clock">9:41</span><span class="notch"></span><span>5G ▮▮▮</span></div>
+    <div id="app"></div>
+  </div>
+  <aside class="side" id="side"></aside>
+</div>
+
+<script>
+/* ---------- helpers ---------- */
+const BN='০১২৩৪৫৬৭৮৯';
+const S={lang:'en',started:false,tab:'home',stack:[],q:'',div:'all',unit:'all',dq:'',spec:'all',onlyToday:false,tcat:'all',saved:new Set(['dsh']),liked:new Set(),notif:true,sheet:null,day:0,slot:null,toast:null};
+try{const l=localStorage.getItem('ador-lang');if(l==='bn'||l==='en')S.lang=l;if(localStorage.getItem('ador-started')==='1')S.started=true}catch(e){}
+const n=x=>S.lang==='bn'?String(x).replace(/\d/g,d=>BN[d]):String(x);
+const L=o=>(o&&typeof o==='object')?(o[S.lang]??o.en):o;
+const t=(k,v)=>{let s=L(T[k]);if(s==null)return k;if(v)for(const a in v)s=s.replace('{'+a+'}',v[a]);return s};
+const money=x=>'৳'+n(x.toLocaleString('en-US'));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const P={
+ home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
+ hosp:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 7v6M9 10h6M10 21v-4h4v4"/>',
+ doc:'<path d="M6 3v5a4 4 0 0 0 8 0V3M10 12v3a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="11" r="2"/>',
+ tips:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+ search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+ back:'<path d="M15 18l-6-6 6-6"/>',
+ phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+ pin:'<path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+ heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
+ bell:'<path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4zM10 21h4"/>',
+ bed:'<path d="M3 18V7M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11" r="2"/>',
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ star:'<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+ alert:'<path d="M12 3 21.5 20h-19z"/><path d="M12 10v4M12 17h.01"/>',
+ share:'<circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/>',
+ check:'<path d="m5 12.5 4.5 4.5L19 7"/>',
+ globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+ copy:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',
+ chev:'<path d="m9 6 6 6-6 6"/>',
+ nav:'<path d="M3 11 21 3l-8 18-2-8z"/>',
+ x:'<path d="M6 6l12 12M18 6 6 18"/>',
+ pulse:'<path d="M3 12h4l2-5 4 10 2-5h6"/>',
+ newborn:'<path d="M9 3h6M10 3v3M14 3v3M8 8a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zM8 12h3M8 15h3"/>',
+ nutrition:'<path d="M5 19c0-9 6-14 15-14 0 9-5 15-14 15M5 19l7-7"/>',
+ vaccine:'<path d="m18 2 4 4M17 7l-9.5 9.5-3.5.5.5-3.5L14 4M13 3l8 8M3 21l2-2M9 12l2 2M12 9l2 2"/>',
+ illness:'<path d="M14 14.8V5a2 2 0 1 0-4 0v9.8a4 4 0 1 0 4 0z"/><path d="M12 11v6"/>',
+ safety:'<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="m9 12 2 2 4-4"/>',
+ send:'<path d="M4 12 20 4l-6 16-3-7z"/>'
+};
+const ic=(k,s=20,w=1.9)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[k]}</svg>`;
+const logo=(s=40)=>`<svg width="${s}" height="${s}" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="15" fill="#0B7A6A"/><path d="M11.5 22c0 9 5.6 15.5 12.5 15.5S36.5 31 36.5 22" stroke="#fff" stroke-width="4.2" stroke-linecap="round" fill="none"/><circle cx="24" cy="20" r="6" fill="#EF7A55"/><path d="M34.5 15.6l-3-2.6c-1.7-1.5-1.8-3.7 0-4.6 1.2-.6 2.4-.2 3 .7.6-.9 1.8-1.3 3-.7 1.8.9 1.7 3.1 0 4.6z" fill="#fff"/></svg>`;
+
+/* ---------- copy ---------- */
+const T={
+ appName:{en:'Ador',bn:'আদর'},
+ tag:{en:'Care for every little heartbeat',bn:'প্রতিটি ছোট্ট হৃদস্পন্দনের যত্নে'},
+ splashSub:{en:'Find NICU beds, child specialists and trusted care tips across Bangladesh.',bn:'সারা বাংলাদেশে নিকু শয্যা, শিশু বিশেষজ্ঞ আর নির্ভরযোগ্য যত্নের পরামর্শ এক জায়গায়।'},
+ chooseLang:{en:'Choose your language',bn:'ভাষা বেছে নিন'},
+ start:{en:'Get started',bn:'শুরু করুন'},
+ demo:{en:'Prototype · demo data',bn:'প্রোটোটাইপ · ডেমো তথ্য'},
+ gm:{en:'Good morning',bn:'সুপ্রভাত'},ga:{en:'Good afternoon',bn:'শুভ অপরাহ্ন'},ge:{en:'Good evening',bn:'শুভ সন্ধ্যা'},
+ parent:{en:'Ritu',bn:'ঋতু'},
+ howIs:{en:'How is Ayaan today?',bn:'আজ আয়ান কেমন আছে?'},
+ searchPh:{en:'Search hospital, doctor or area',bn:'হাসপাতাল, ডাক্তার বা এলাকা খুঁজুন'},
+ sosTitle:{en:'Baby needs urgent care?',bn:'শিশুর জরুরি চিকিৎসা দরকার?'},
+ sosSub:{en:'See the nearest NICU with a free bed',bn:'খালি শয্যাসহ নিকটতম নিকু দেখুন'},
+ liveBeds:{en:'Live beds across Bangladesh',bn:'সারা দেশে এখনকার শয্যা'},
+ freeNicu:{en:'NICU beds free',bn:'খালি নিকু শয্যা'},freePicu:{en:'PICU beds free',bn:'খালি পিকু শয্যা'},docsToday:{en:'Specialists in today',bn:'আজ বিশেষজ্ঞ আছেন'},
+ find:{en:'Find care',bn:'সেবা খুঁজুন'},specialists:{en:'Doctors',bn:'ডাক্তার'},
+ nearYou:{en:'Near you',bn:'আপনার কাছে'},seeAll:{en:'See all',bn:'সব দেখুন'},
+ tipDay:{en:'Tip of the day',bn:'আজকের পরামর্শ'},availToday:{en:'Available today',bn:'আজ পাওয়া যাবে'},
+ hospitals:{en:'Hospitals',bn:'হাসপাতাল'},hospSub:{en:'Child care beds, updated live',bn:'শিশু সেবার শয্যা, সরাসরি হালনাগাদ'},
+ all:{en:'All units',bn:'সব ইউনিট'},allDiv:{en:'All Bangladesh',bn:'সারা দেশ'},
+ results:{en:'{n} hospitals',bn:'{n}টি হাসপাতাল'},nearestFirst:{en:'Nearest first',bn:'কাছেরগুলো আগে'},
+ noRes:{en:'No hospitals match. Try another area or unit.',bn:'কোনো হাসপাতাল মেলেনি। অন্য এলাকা বা ইউনিট দেখুন।'},
+ govt:{en:'Government',bn:'সরকারি'},private:{en:'Private',bn:'বেসরকারি'},trust:{en:'Trust',bn:'ট্রাস্ট'},
+ km:{en:'km',bn:'কিমি'},
+ full:{en:'Full',bn:'পূর্ণ'},few:{en:'Few left',bn:'অল্প বাকি'},ok:{en:'Available',bn:'খালি আছে'},
+ justNow:{en:'Updated just now',bn:'এইমাত্র হালনাগাদ'},minAgo:{en:'Updated {n} min ago',bn:'{n} মিনিট আগে হালনাগাদ'},
+ bedsNow:{en:'Beds right now',bn:'এখনকার শয্যা'},
+ freeOf:{en:'free of {n} beds',bn:'টি খালি · মোট {n}'},occupied:{en:'{n}% occupied',bn:'{n}% ভর্তি'},
+ call:{en:'Call',bn:'কল'},directions:{en:'Directions',bn:'পথ দেখুন'},request:{en:'Request bed',bn:'শয্যা চাই'},
+ docsHere:{en:'Specialists here',bn:'এখানকার বিশেষজ্ঞ'},facilities:{en:'Facilities',bn:'সুবিধাসমূহ'},about:{en:'Details',bn:'বিস্তারিত'},
+ open247:{en:'Emergency open 24/7',bn:'জরুরি বিভাগ ২৪/৭ খোলা'},visiting:{en:'Visiting hours 3–6 PM',bn:'সাক্ষাতের সময় বিকাল ৩–৬টা'},
+ doctors:{en:'Doctors',bn:'ডাক্তার'},docSub:{en:'Child specialists you can book',bn:'বুক করা যায় এমন শিশু বিশেষজ্ঞ'},
+ docSearch:{en:'Search doctor or hospital',bn:'ডাক্তার বা হাসপাতাল খুঁজুন'},onlyToday:{en:'Only show doctors in today',bn:'শুধু আজ যাঁরা আছেন'},
+ allSpec:{en:'All',bn:'সব'},yrs:{en:'{n} yrs',bn:'{n} বছর'},fee:{en:'Fee',bn:'ফি'},
+ today:{en:'Today',bn:'আজ'},tomorrow:{en:'Tomorrow',bn:'আগামীকাল'},nextSlot:{en:'{d}, {t}',bn:'{d}, {t}'},
+ experience:{en:'Experience',bn:'অভিজ্ঞতা'},patients:{en:'Patients',bn:'রোগী'},rating:{en:'Rating',bn:'রেটিং'},
+ chamber:{en:'Chamber',bn:'চেম্বার'},pickDay:{en:'Pick a day',bn:'দিন বেছে নিন'},pickTime:{en:'Pick a time',bn:'সময় বেছে নিন'},
+ bookBtn:{en:'Book appointment',bn:'অ্যাপয়েন্টমেন্ট নিন'},selectSlot:{en:'Pick a time to continue',bn:'এগোতে একটি সময় বেছে নিন'},
+ confirmTitle:{en:'Confirm appointment',bn:'অ্যাপয়েন্টমেন্ট নিশ্চিত করুন'},confirm:{en:'Confirm booking',bn:'বুকিং নিশ্চিত করুন'},
+ bookedTitle:{en:'Appointment booked',bn:'অ্যাপয়েন্টমেন্ট নিশ্চিত হয়েছে'},serial:{en:'Serial no.',bn:'সিরিয়াল নং'},
+ doctor:{en:'Doctor',bn:'ডাক্তার'},when:{en:'When',bn:'কখন'},where:{en:'Where',bn:'কোথায়'},patient:{en:'Patient',bn:'রোগী'},
+ arrive:{en:'Please arrive 15 minutes early with your child’s health card.',bn:'শিশুর স্বাস্থ্য কার্ডসহ ১৫ মিনিট আগে আসুন।'},
+ done:{en:'Done',bn:'ঠিক আছে'},cancel:{en:'Cancel',bn:'বাতিল'},
+ tips:{en:'Tips',bn:'পরামর্শ'},tipsTitle:{en:'Tips & advice',bn:'পরামর্শ ও যত্ন'},tipsSub:{en:'New every week, reviewed by child specialists',bn:'প্রতি সপ্তাহে নতুন, শিশু বিশেষজ্ঞদের যাচাই করা'},
+ allTopics:{en:'All',bn:'সব'},minRead:{en:'{n} min read',bn:'{n} মিনিটে পড়ুন'},reviewedBy:{en:'Reviewed by',bn:'যাচাই করেছেন'},
+ seeDoctor:{en:'See a doctor right away if',bn:'দ্রুত ডাক্তার দেখান যদি'},
+ disclaimer:{en:'General guidance only. Always follow your child’s doctor.',bn:'এটি সাধারণ নির্দেশনা। সবসময় শিশুর ডাক্তারের পরামর্শ মানুন।'},
+ helpful:{en:'Helpful',bn:'উপকারী'},markedHelpful:{en:'Thanks for the feedback',bn:'মতামতের জন্য ধন্যবাদ'},
+ emergency:{en:'Emergency',bn:'জরুরি'},emTitle:{en:'Get help now',bn:'এখনই সাহায্য নিন'},emSub:{en:'Stay calm. Help is close by.',bn:'শান্ত থাকুন। সাহায্য কাছেই।'},
+ national:{en:'National emergency · police, fire, ambulance',bn:'জাতীয় জরুরি সেবা · পুলিশ, ফায়ার, অ্যাম্বুলেন্স'},
+ healthLine:{en:'Shastho Batayon · health advice 24/7',bn:'স্বাস্থ্য বাতায়ন · ২৪ ঘণ্টা স্বাস্থ্য পরামর্শ'},
+ nearestFree:{en:'Nearest NICU with a free bed',bn:'খালি শয্যাসহ নিকটতম নিকু'},onTheWay:{en:'On the way to hospital',bn:'হাসপাতালে যাওয়ার পথে'},
+ copy:{en:'Copy',bn:'কপি'},copied:{en:'Number copied',bn:'নম্বর কপি হয়েছে'},
+ callTitle:{en:'Call {h}',bn:'{h}-এ কল করুন'},callNote:{en:'Dial this number from your phone. In the real app this button rings the hospital directly.',bn:'ফোন থেকে এই নম্বরে কল করুন। আসল অ্যাপে বোতাম চাপলেই সরাসরি কল যাবে।'},
+ profile:{en:'Profile',bn:'প্রোফাইল'},parentFull:{en:'Ritu Akter',bn:'ঋতু আক্তার'},parentRole:{en:'Parent · Mirpur, Dhaka',bn:'অভিভাবক · মিরপুর, ঢাকা'},
+ myChild:{en:'My child',bn:'আমার শিশু'},childName:{en:'Ayaan',bn:'আয়ান'},childAge:{en:'8 months · 7.9 kg',bn:'৮ মাস · ৭.৯ কেজি'},
+ nextVaccine:{en:'Next vaccine: MR-1 at 9 months',bn:'পরবর্তী টিকা: ৯ মাসে এমআর-১'},
+ language:{en:'Language',bn:'ভাষা'},notifs:{en:'Bed & tip alerts',bn:'শয্যা ও পরামর্শের অ্যালার্ট'},
+ saved:{en:'Saved hospitals',bn:'সংরক্ষিত হাসপাতাল'},noSaved:{en:'Tap the heart on any hospital to keep it here.',bn:'যেকোনো হাসপাতালের হার্টে চাপ দিয়ে এখানে রাখুন।'},
+ aboutApp:{en:'About this prototype',bn:'এই প্রোটোটাইপ সম্পর্কে'},
+ aboutTxt:{en:'Ador is a design prototype. Hospital names are real, but every bed count, doctor and hospital phone number is demo data. 999 and 16263 are real public hotlines.',bn:'আদর একটি ডিজাইন প্রোটোটাইপ। হাসপাতালের নাম বাস্তব, কিন্তু শয্যার সংখ্যা, ডাক্তার ও হাসপাতালের ফোন নম্বর সবই ডেমো তথ্য। ৯৯৯ ও ১৬২৬৩ আসল সরকারি হটলাইন।'},
+ savedToast:{en:'Saved to your list',bn:'তালিকায় রাখা হলো'},unsavedToast:{en:'Removed from your list',bn:'তালিকা থেকে সরানো হলো'},
+ linkCopied:{en:'Share link ready (demo)',bn:'শেয়ার লিংক তৈরি (ডেমো)'},
+ notifications:{en:'Notifications',bn:'নোটিফিকেশন'},
+ reqTitle:{en:'Request a bed',bn:'শয্যার অনুরোধ'},reqSub:{en:'The hospital desk calls you back to confirm.',bn:'নিশ্চিত করতে হাসপাতাল ডেস্ক আপনাকে ফোন করবে।'},
+ fChild:{en:"Child's name",bn:'শিশুর নাম'},fAge:{en:'Age',bn:'বয়স'},fUnit:{en:'Unit',bn:'ইউনিট'},fPhone:{en:'Your phone',bn:'আপনার ফোন'},fNote:{en:'What is happening? (optional)',bn:'কী সমস্যা হচ্ছে? (ঐচ্ছিক)'},
+ notePh:{en:'e.g. fast breathing since morning',bn:'যেমন: সকাল থেকে দ্রুত শ্বাস নিচ্ছে'},
+ send:{en:'Send request',bn:'অনুরোধ পাঠান'},reqDone:{en:'Request sent',bn:'অনুরোধ পাঠানো হয়েছে'},
+ reqDoneTxt:{en:'{h} has your request. The {u} desk usually calls back within 15 minutes.',bn:'{h} আপনার অনুরোধ পেয়েছে। {u} ডেস্ক সাধারণত ১৫ মিনিটের মধ্যে ফোন করে।'},
+ ref:{en:'Reference',bn:'রেফারেন্স'},demoNote:{en:'Prototype: nothing is actually sent.',bn:'প্রোটোটাইপ: আসলে কিছু পাঠানো হয় না।'},
+ home:{en:'Home',bn:'হোম'},sos:{en:'SOS',bn:'জরুরি'},
+ tryTitle:{en:'Things to try',bn:'যা যা চেষ্টা করবেন'},
+ try1:{en:'Watch bed counts change live on Home and Hospitals',bn:'হোম ও হাসপাতাল পাতায় শয্যার সংখ্যা সরাসরি বদলাতে দেখুন'},
+ try2:{en:'Filter hospitals by division and unit',bn:'বিভাগ ও ইউনিট দিয়ে হাসপাতাল খুঁজুন'},
+ try3:{en:'Request a NICU bed from a hospital page',bn:'হাসপাতালের পাতা থেকে নিকু শয্যা চান'},
+ try4:{en:'Book a doctor, then read a tip',bn:'ডাক্তার বুক করুন, তারপর একটি পরামর্শ পড়ুন'},
+ try5:{en:'Tap the red SOS button',bn:'লাল জরুরি বোতামে চাপ দিন'},
+ legend:{en:'Bed status',bn:'শয্যার অবস্থা'}
+};
+
+const DIVS=[['all',T.allDiv],['dhaka',{en:'Dhaka',bn:'ঢাকা'}],['chattogram',{en:'Chattogram',bn:'চট্টগ্রাম'}],['rajshahi',{en:'Rajshahi',bn:'রাজশাহী'}],['khulna',{en:'Khulna',bn:'খুলনা'}],['barishal',{en:'Barishal',bn:'বরিশাল'}],['sylhet',{en:'Sylhet',bn:'সিলেট'}],['rangpur',{en:'Rangpur',bn:'রংপুর'}],['mymensingh',{en:'Mymensingh',bn:'ময়মনসিংহ'}]];
+const UNITS={
+ nicu:{n:{en:'NICU',bn:'নিকু'},d:{en:'Newborn intensive care · 0–28 days',bn:'নবজাতক নিবিড় পরিচর্যা · ০–২৮ দিন'}},
+ scanu:{n:{en:'SCANU',bn:'স্ক্যানু'},d:{en:'Special care newborn unit',bn:'বিশেষ নবজাতক সেবা ইউনিট'}},
+ picu:{n:{en:'PICU',bn:'পিকু'},d:{en:'Child intensive care · 1 month–17 years',bn:'শিশু নিবিড় পরিচর্যা · ১ মাস–১৭ বছর'}},
+ ward:{n:{en:'Child ward',bn:'শিশু ওয়ার্ড'},d:{en:'General paediatric beds',bn:'সাধারণ শিশু শয্যা'}}
+};
+const FAC={vent:{en:'Ventilators',bn:'ভেন্টিলেটর'},incub:{en:'Incubators',bn:'ইনকিউবেটর'},photo:{en:'Phototherapy',bn:'ফটোথেরাপি'},cpap:{en:'Bubble CPAP',bn:'বাবল সিপ্যাপ'},blood:{en:'Blood bank',bn:'ব্লাড ব্যাংক'},ambul:{en:'Ambulance',bn:'অ্যাম্বুলেন্স'},kmc:{en:'Kangaroo care corner',bn:'ক্যাঙ্গারু কেয়ার কর্নার'}};
+
+const now=Date.now(),M=60000;
+const H=[
+ {id:'dsh',ab:'DSH',n:{en:'Dhaka Shishu Hospital',bn:'ঢাকা শিশু হাসপাতাল'},a:{en:'Sher-e-Bangla Nagar, Dhaka',bn:'শেরেবাংলা নগর, ঢাকা'},div:'dhaka',type:'govt',km:2.4,u:{nicu:[3,40],scanu:[5,30],picu:[1,20],ward:[18,300]},f:['vent','incub','photo','cpap','blood','ambul','kmc'],r:4.6},
+ {id:'dmch',ab:'DMC',n:{en:'Dhaka Medical College Hospital',bn:'ঢাকা মেডিকেল কলেজ হাসপাতাল'},a:{en:'Bakshibazar, Dhaka',bn:'বকশীবাজার, ঢাকা'},div:'dhaka',type:'govt',km:5.2,u:{nicu:[0,32],scanu:[2,24],picu:[2,12],ward:[9,160]},f:['vent','incub','photo','blood','ambul'],r:4.2},
+ {id:'square',ab:'SQH',n:{en:'Square Hospitals',bn:'স্কয়ার হাসপাতাল'},a:{en:'Panthapath, Dhaka',bn:'পান্থপথ, ঢাকা'},div:'dhaka',type:'private',km:3.6,u:{nicu:[2,24],picu:[0,10],ward:[7,45]},f:['vent','incub','photo','blood','ambul'],r:4.7},
+ {id:'evercare',ab:'EVC',n:{en:'Evercare Hospital Dhaka',bn:'এভারকেয়ার হাসপাতাল ঢাকা'},a:{en:'Bashundhara, Dhaka',bn:'বসুন্ধরা, ঢাকা'},div:'dhaka',type:'private',km:7.8,u:{nicu:[4,28],picu:[3,14],ward:[12,60]},f:['vent','incub','photo','cpap','blood','ambul'],r:4.8},
+ {id:'icmh',ab:'ICMH',n:{en:'Institute of Child and Mother Health',bn:'মা ও শিশু স্বাস্থ্য ইনস্টিটিউট'},a:{en:'Matuail, Dhaka',bn:'মাতুয়াইল, ঢাকা'},div:'dhaka',type:'govt',km:9.5,u:{nicu:[6,30],scanu:[4,24],ward:[25,150]},f:['incub','photo','cpap','kmc','ambul'],r:4.3},
+ {id:'mmch',ab:'MMC',n:{en:'Mymensingh Medical College Hospital',bn:'ময়মনসিংহ মেডিকেল কলেজ হাসপাতাল'},a:{en:'Charpara, Mymensingh',bn:'চরপাড়া, ময়মনসিংহ'},div:'mymensingh',type:'govt',km:120,u:{nicu:[4,30],scanu:[6,32],picu:[1,10],ward:[20,200]},f:['incub','photo','cpap','kmc','blood'],r:4.1},
+ {id:'sbmch',ab:'SBM',n:{en:'Sher-e-Bangla Medical College Hospital',bn:'শেরেবাংলা মেডিকেল কলেজ হাসপাতাল'},a:{en:'Band Road, Barishal',bn:'বান্দ রোড, বরিশাল'},div:'barishal',type:'govt',km:160,u:{nicu:[1,16],scanu:[5,24],ward:[14,120]},f:['incub','photo','kmc','blood'],r:4.0},
+ {id:'osmani',ab:'OMC',n:{en:'Sylhet MAG Osmani Medical College Hospital',bn:'সিলেট এম এ জি ওসমানী মেডিকেল কলেজ হাসপাতাল'},a:{en:'Kajalshah, Sylhet',bn:'কাজলশাহ, সিলেট'},div:'sylhet',type:'govt',km:198,u:{nicu:[2,24],scanu:[3,20],ward:[11,140]},f:['vent','incub','photo','blood'],r:4.1},
+ {id:'ksh',ab:'KSH',n:{en:'Khulna Shishu Hospital',bn:'খুলনা শিশু হাসপাতাল'},a:{en:'Boyra, Khulna',bn:'বয়রা, খুলনা'},div:'khulna',type:'trust',km:225,u:{nicu:[3,20],scanu:[2,16],ward:[10,100]},f:['incub','photo','cpap','kmc'],r:4.3},
+ {id:'cmch',ab:'CMC',n:{en:'Chittagong Medical College Hospital',bn:'চট্টগ্রাম মেডিকেল কলেজ হাসপাতাল'},a:{en:'Panchlaish, Chattogram',bn:'পাঁচলাইশ, চট্টগ্রাম'},div:'chattogram',type:'govt',km:242,u:{nicu:[1,36],scanu:[3,40],picu:[0,10],ward:[22,250]},f:['vent','incub','photo','blood','ambul'],r:4.2},
+ {id:'cmosh',ab:'CMS',n:{en:'Chattogram Maa-O-Shishu Hospital',bn:'চট্টগ্রাম মা ও শিশু হাসপাতাল'},a:{en:'Agrabad, Chattogram',bn:'আগ্রাবাদ, চট্টগ্রাম'},div:'chattogram',type:'trust',km:246,u:{nicu:[5,30],picu:[2,12],ward:[15,120]},f:['vent','incub','photo','cpap','kmc'],r:4.5},
+ {id:'rmch',ab:'RMC',n:{en:'Rajshahi Medical College Hospital',bn:'রাজশাহী মেডিকেল কলেজ হাসপাতাল'},a:{en:'Laxmipur, Rajshahi',bn:'লক্ষ্মীপুর, রাজশাহী'},div:'rajshahi',type:'govt',km:255,u:{nicu:[0,20],scanu:[4,30],picu:[1,8],ward:[19,180]},f:['incub','photo','blood','ambul'],r:4.0},
+ {id:'rpmch',ab:'RPM',n:{en:'Rangpur Medical College Hospital',bn:'রংপুর মেডিকেল কলেজ হাসপাতাল'},a:{en:'Dhap, Rangpur',bn:'ধাপ, রংপুর'},div:'rangpur',type:'govt',km:300,u:{nicu:[2,18],scanu:[3,22],ward:[16,150]},f:['incub','photo','kmc','blood'],r:4.0}
+];
+H.forEach((h,i)=>{h.upd=now-((i*3)%9+1)*M;h.phone='+880 2 0000 '+String(1100+i*7)});
+const HB=Object.fromEntries(H.map(h=>[h.id,h]));
+
+const SPEC={neo:{en:'Neonatologist',bn:'নবজাতক বিশেষজ্ঞ'},ped:{en:'Paediatrician',bn:'শিশু বিশেষজ্ঞ'},cardio:{en:'Child cardiologist',bn:'শিশু হৃদরোগ বিশেষজ্ঞ'},surg:{en:'Paediatric surgeon',bn:'শিশু সার্জন'},neuro:{en:'Child neurologist',bn:'শিশু স্নায়ুরোগ বিশেষজ্ঞ'},pulmo:{en:'Child lung specialist',bn:'শিশু ফুসফুস বিশেষজ্ঞ'},nutri:{en:'Child nutritionist',bn:'শিশু পুষ্টিবিদ'}};
+const D=[
+ {id:'d1',ini:'FR',hue:'var(--primary-soft)',n:{en:'Dr. Farhana Rahman',bn:'ডা. ফারহানা রহমান'},s:'neo',h:'dsh',exp:14,fee:1000,r:4.9,pt:'3.2k',deg:'MBBS, FCPS (Paed), MD (Neonatology)',today:true,slots:['16:00','16:30','17:00','17:30','18:30','19:00'],off:['16:30','17:30']},
+ {id:'d2',ini:'TA',hue:'var(--accent-soft)',n:{en:'Dr. Tanvir Ahmed',bn:'ডা. তানভীর আহমেদ'},s:'cardio',h:'evercare',exp:18,fee:1500,r:4.8,pt:'4.1k',deg:'MBBS, MD (Paed Cardiology)',today:false,slots:['10:00','10:30','11:00','11:30','12:00','12:30'],off:['10:00']},
+ {id:'d3',ini:'NJ',hue:'var(--ok-soft)',n:{en:'Dr. Nusrat Jahan',bn:'ডা. নুসরাত জাহান'},s:'ped',h:'square',exp:9,fee:1000,r:4.7,pt:'2.6k',deg:'MBBS, FCPS (Paediatrics)',today:true,slots:['17:00','17:30','18:00','18:30','19:00','19:30'],off:['17:00','18:00']},
+ {id:'d4',ini:'MH',hue:'var(--surface-2)',n:{en:'Dr. Mahmudul Hasan',bn:'ডা. মাহমুদুল হাসান'},s:'surg',h:'dmch',exp:20,fee:800,r:4.6,pt:'5.0k',deg:'MBBS, MS (Paediatric Surgery)',today:true,slots:['15:00','15:30','16:00','16:30','20:00','20:30'],off:['15:00','15:30','16:00']},
+ {id:'d5',ini:'SA',hue:'var(--warn-soft)',n:{en:'Dr. Shirin Akter',bn:'ডা. শিরিন আক্তার'},s:'neuro',h:'icmh',exp:12,fee:900,r:4.8,pt:'2.2k',deg:'MBBS, MD (Paediatric Neurology)',today:false,slots:['09:30','10:00','10:30','11:00','11:30','12:00'],off:[]},
+ {id:'d6',ini:'RI',hue:'var(--primary-soft)',n:{en:'Dr. Rafiqul Islam',bn:'ডা. রফিকুল ইসলাম'},s:'ped',h:'cmch',exp:16,fee:700,r:4.5,pt:'6.3k',deg:'MBBS, DCH, FCPS (Paediatrics)',today:true,slots:['18:00','18:30','19:00','19:30','20:00','20:30'],off:['19:00']},
+ {id:'d7',ini:'SC',hue:'var(--ok-soft)',n:{en:'Dr. Sabrina Chowdhury',bn:'ডা. সাবরিনা চৌধুরী'},s:'nutri',h:'dsh',exp:8,fee:800,r:4.7,pt:'1.4k',deg:'MBBS, MPH (Child Nutrition)',today:true,slots:['11:00','11:30','12:00','14:00','14:30','15:00'],off:['11:00']},
+ {id:'d8',ini:'AH',hue:'var(--accent-soft)',n:{en:'Dr. Arif Hossain',bn:'ডা. আরিফ হোসেন'},s:'pulmo',h:'osmani',exp:11,fee:700,r:4.6,pt:'1.9k',deg:'MBBS, MD (Paediatric Pulmonology)',today:false,slots:['16:00','16:30','17:00','17:30','18:00','18:30'],off:[]},
+ {id:'d9',ini:'LB',hue:'var(--primary-soft)',n:{en:'Dr. Laila Begum',bn:'ডা. লাইলা বেগম'},s:'neo',h:'mmch',exp:10,fee:600,r:4.6,pt:'2.0k',deg:'MBBS, MD (Neonatology)',today:true,slots:['17:00','17:30','18:00','18:30','19:00','19:30'],off:['17:30']}
+];
+const DB=Object.fromEntries(D.map(d=>[d.id,d]));
+
+const TCAT={newborn:{en:'Newborn',bn:'নবজাতক'},nutrition:{en:'Nutrition',bn:'পুষ্টি'},vaccine:{en:'Vaccines',bn:'টিকা'},illness:{en:'Illness',bn:'অসুখ'},safety:{en:'Safety',bn:'নিরাপত্তা'}};
+const TIPS=[
+ {id:'t1',c:'illness',min:4,by:'d8',ago:{en:'Today',bn:'আজ'},
+  n:{en:'Winter is here: spot pneumonia early',bn:'শীত এসেছে: নিউমোনিয়ার লক্ষণ আগেই চিনুন'},
+  s:{en:'Count your child’s breaths. Fast breathing is often the first sign.',bn:'শিশুর শ্বাস গুনুন। দ্রুত শ্বাস প্রায়ই প্রথম লক্ষণ।'},
+  p:{en:['Count breaths for one full minute while your child is calm or asleep.','Fast breathing means 60 or more a minute under 2 months, 50 or more at 2–12 months, and 40 or more at 1–5 years.','Watch the lower chest. If it sinks in when your child breathes in, that is chest indrawing.','Keep your child warm, keep breastfeeding, and give plenty of fluids.'],
+     bn:['শিশু শান্ত বা ঘুমন্ত অবস্থায় পুরো এক মিনিট শ্বাস গুনুন।','২ মাসের নিচে মিনিটে ৬০ বা বেশি, ২–১২ মাসে ৫০ বা বেশি, ১–৫ বছরে ৪০ বা বেশি হলে তা দ্রুত শ্বাস।','বুকের নিচের অংশ খেয়াল করুন। শ্বাস নেওয়ার সময় ভেতরে দেবে গেলে তা বুক দেবে যাওয়া।','শিশুকে গরম রাখুন, বুকের দুধ চালিয়ে যান, বেশি করে তরল দিন।']},
+  w:{en:['The chest sinks in with each breath','Your child cannot drink or breastfeed','Lips or tongue look bluish','Convulsions or unusual sleepiness'],bn:['প্রতি শ্বাসে বুক দেবে যায়','শিশু পান করতে বা বুকের দুধ টানতে পারছে না','ঠোঁট বা জিহ্বা নীলচে দেখায়','খিঁচুনি বা অস্বাভাবিক ঝিমুনি']}},
+ {id:'t2',c:'newborn',min:3,by:'d1',ago:{en:'2 days ago',bn:'২ দিন আগে'},
+  n:{en:'Kangaroo mother care for small babies',bn:'ছোট শিশুর জন্য ক্যাঙ্গারু মাদার কেয়ার'},
+  s:{en:'Skin-to-skin contact keeps a small baby warm and helps them grow.',bn:'ত্বকের সঙ্গে ত্বকের ছোঁয়া ছোট শিশুকে গরম রাখে ও বাড়তে সাহায্য করে।'},
+  p:{en:['Place the baby, wearing only a nappy and cap, upright on the bare chest between the breasts.','Wrap a cloth or shawl around you both so the baby’s head is turned to one side and the nose stays clear.','Aim for as many hours a day as you can. Fathers and grandmothers can take turns.','Breastfeed often while in this position. It helps milk flow.'],
+     bn:['শিশুকে শুধু ন্যাপি ও টুপি পরিয়ে খালি বুকে দুই স্তনের মাঝে খাড়া করে রাখুন।','কাপড় বা শাল দিয়ে দুজনকে জড়িয়ে নিন, শিশুর মাথা একপাশে ফেরানো থাকুক যেন নাক খোলা থাকে।','দিনে যত বেশি ঘণ্টা পারেন রাখুন। বাবা ও দাদি-নানিও পালা করে রাখতে পারেন।','এই অবস্থায় বারবার বুকের দুধ খাওয়ান। এতে দুধ ভালো আসে।']},
+  w:{en:['The baby feels cold even with skin contact','The baby stops feeding','Breathing pauses or looks difficult'],bn:['ছোঁয়ার মধ্যেও শিশু ঠান্ডা লাগে','শিশু দুধ খাওয়া বন্ধ করে','শ্বাস থেমে যায় বা কষ্ট হয়']}},
+ {id:'t3',c:'vaccine',min:3,by:'d3',ago:{en:'4 days ago',bn:'৪ দিন আগে'},
+  n:{en:'Your baby’s vaccine calendar',bn:'আপনার শিশুর টিকার ক্যালেন্ডার'},
+  s:{en:'The national EPI schedule at a glance. All doses are free at government centres.',bn:'জাতীয় ইপিআই সূচি এক নজরে। সরকারি কেন্দ্রে সব টিকা বিনামূল্যে।'},
+  p:{en:['At birth: BCG.','At 6, 10 and 14 weeks: Pentavalent, pneumococcal (PCV) and polio vaccines.','At 9 months: first dose of MR (measles-rubella).','At 15 months: second dose of MR.','Keep the vaccination card safe and bring it to every visit.'],
+     bn:['জন্মের পর: বিসিজি।','৬, ১০ ও ১৪ সপ্তাহে: পেন্টাভ্যালেন্ট, নিউমোকক্কাল (পিসিভি) ও পোলিও টিকা।','৯ মাসে: এমআর (হাম-রুবেলা) প্রথম ডোজ।','১৫ মাসে: এমআর দ্বিতীয় ডোজ।','টিকা কার্ড যত্নে রাখুন এবং প্রতিবার সঙ্গে আনুন।']},
+  w:{en:['High fever or a seizure after a vaccine','Swelling that keeps growing at the injection site'],bn:['টিকার পর বেশি জ্বর বা খিঁচুনি','টিকার জায়গায় ফোলা বাড়তে থাকা']}},
+ {id:'t4',c:'illness',min:3,by:'d3',ago:{en:'5 days ago',bn:'৫ দিন আগে'},
+  n:{en:'Making ORS the right way',bn:'সঠিকভাবে খাবার স্যালাইন বানান'},
+  s:{en:'One packet, half a litre of clean water, and small sips after every loose stool.',bn:'একটি প্যাকেট, আধা লিটার বিশুদ্ধ পানি, আর প্রতিবার পাতলা পায়খানার পর অল্প অল্প করে।'},
+  p:{en:['Wash your hands. Pour one full packet into half a litre (500 ml) of clean drinking water and stir.','Give small sips with a spoon or cup. If your child vomits, wait 10 minutes and start again slowly.','Use the mixed ORS within 12 hours, then make a fresh batch.','Keep breastfeeding and offer normal food. Ask your doctor about zinc tablets.'],
+     bn:['হাত ধুয়ে নিন। একটি পুরো প্যাকেট আধা লিটার (৫০০ মিলি) বিশুদ্ধ খাবার পানিতে মিশিয়ে নাড়ুন।','চামচ বা কাপে অল্প অল্প করে দিন। বমি করলে ১০ মিনিট অপেক্ষা করে আবার ধীরে দিন।','বানানো স্যালাইন ১২ ঘণ্টার মধ্যে শেষ করুন, তারপর নতুন করে বানান।','বুকের দুধ ও স্বাভাবিক খাবার চালিয়ে যান। জিঙ্ক ট্যাবলেটের জন্য ডাক্তারকে জিজ্ঞেস করুন।']},
+  w:{en:['No urine for 6 hours or more','Blood in the stool','Very sleepy or hard to wake','Sunken eyes and cannot drink'],bn:['৬ ঘণ্টা বা তার বেশি প্রস্রাব নেই','পায়খানায় রক্ত','খুব ঝিমানো বা জাগানো কঠিন','চোখ বসে গেছে এবং পান করতে পারছে না']}},
+ {id:'t5',c:'nutrition',min:3,by:'d7',ago:{en:'1 week ago',bn:'১ সপ্তাহ আগে'},
+  n:{en:'Only breast milk for the first 6 months',bn:'প্রথম ৬ মাস শুধু বুকের দুধ'},
+  s:{en:'No water, honey or formula needed. Breast milk has everything.',bn:'পানি, মধু বা ফর্মুলা লাগবে না। বুকের দুধেই সব আছে।'},
+  p:{en:['Start breastfeeding within the first hour after birth. The first yellow milk protects your baby.','Feed whenever the baby wants, day and night, usually 8–12 times a day.','Do not give honey before the first birthday.','At 6 months, add soft family food such as mashed khichuri while breastfeeding continues.'],
+     bn:['জন্মের প্রথম ঘণ্টার মধ্যে বুকের দুধ দিন। প্রথম হলুদ দুধ শিশুকে সুরক্ষা দেয়।','শিশু যখন চায় তখনই দিন, দিনে-রাতে সাধারণত ৮–১২ বার।','এক বছর বয়সের আগে মধু দেবেন না।','৬ মাসে বুকের দুধের পাশাপাশি নরম ঘরের খাবার, যেমন চটকানো খিচুড়ি শুরু করুন।']},
+  w:{en:['Fewer than 6 wet nappies a day after the first week','The baby is losing weight'],bn:['প্রথম সপ্তাহের পর দিনে ৬টির কম ভেজা ন্যাপি','শিশুর ওজন কমছে']}},
+ {id:'t6',c:'illness',min:4,by:'d6',ago:{en:'1 week ago',bn:'১ সপ্তাহ আগে'},
+  n:{en:'Dengue in children: the warning signs',bn:'শিশুর ডেঙ্গু: সতর্কসংকেত'},
+  s:{en:'The riskiest time is often when the fever comes down.',bn:'জ্বর কমে যাওয়ার সময়টাই প্রায়ই সবচেয়ে ঝুঁকির।'},
+  p:{en:['Give paracetamol for fever. Avoid ibuprofen and aspirin.','Give plenty of fluids: water, ORS, soup, fruit juice.','Watch closely on days 3 to 7, even if the fever has gone.','Use mosquito nets day and night and empty standing water at home.'],
+     bn:['জ্বরে প্যারাসিটামল দিন। আইবুপ্রোফেন ও অ্যাসপিরিন দেবেন না।','বেশি করে তরল দিন: পানি, স্যালাইন, স্যুপ, ফলের রস।','৩ থেকে ৭ দিন খুব খেয়াল রাখুন, জ্বর চলে গেলেও।','দিনে-রাতে মশারি ব্যবহার করুন, বাড়ির জমা পানি ফেলে দিন।']},
+  w:{en:['Belly pain or repeated vomiting','Bleeding from gums or nose','Cold hands and feet, very sleepy','No urine for 6 hours'],bn:['পেটে ব্যথা বা বারবার বমি','মাড়ি বা নাক দিয়ে রক্ত','হাত-পা ঠান্ডা, খুব ঝিমানো','৬ ঘণ্টা প্রস্রাব নেই']}},
+ {id:'t7',c:'newborn',min:3,by:'d9',ago:{en:'2 weeks ago',bn:'২ সপ্তাহ আগে'},
+  n:{en:'Newborn jaundice: when to worry',bn:'নবজাতকের জন্ডিস: কখন চিন্তার'},
+  s:{en:'Mild yellowing in the first week is common. Know when it is not.',bn:'প্রথম সপ্তাহে হালকা হলুদ হওয়া স্বাভাবিক। কখন নয় তা জানুন।'},
+  p:{en:['Check the skin in daylight by gently pressing the forehead or chest.','Feed often. Frequent feeding helps the baby clear jaundice.','Sunlight through a window is not a treatment. Phototherapy in hospital is.'],
+     bn:['দিনের আলোয় কপাল বা বুক আলতো চেপে ত্বক দেখুন।','বারবার দুধ খাওয়ান। এতে জন্ডিস কমতে সাহায্য হয়।','জানালার রোদ চিকিৎসা নয়। হাসপাতালে ফটোথেরাপিই চিকিৎসা।']},
+  w:{en:['Yellow skin in the first 24 hours','Yellow palms or soles','The baby is very sleepy or not feeding','Pale stool or dark urine'],bn:['প্রথম ২৪ ঘণ্টায় হলুদ ত্বক','হাতের তালু বা পায়ের তলা হলুদ','শিশু খুব ঝিমায় বা দুধ খায় না','ফ্যাকাশে পায়খানা বা গাঢ় প্রস্রাব']}},
+ {id:'t8',c:'safety',min:2,by:'d1',ago:{en:'3 weeks ago',bn:'৩ সপ্তাহ আগে'},
+  n:{en:'Safe sleep for your baby',bn:'শিশুর নিরাপদ ঘুম'},
+  s:{en:'On the back, on a firm flat surface, under a mosquito net.',bn:'চিত করে, শক্ত সমতল জায়গায়, মশারির নিচে।'},
+  p:{en:['Always put your baby to sleep on their back.','Use a firm, flat surface. Keep pillows, soft toys and loose blankets away from the face.','Keep the room comfortably warm, not hot. One more layer than you wear is enough.','Never sleep with the baby on a sofa or chair.'],
+     bn:['শিশুকে সবসময় চিত করে ঘুম পাড়ান।','শক্ত, সমতল জায়গা ব্যবহার করুন। বালিশ, নরম খেলনা ও ঢিলা কাঁথা মুখ থেকে দূরে রাখুন।','ঘর আরামদায়ক গরম রাখুন, বেশি গরম নয়। আপনার চেয়ে এক পরত বেশি কাপড়ই যথেষ্ট।','কখনো সোফা বা চেয়ারে শিশুকে নিয়ে ঘুমাবেন না।']},
+  w:{en:['Breathing pauses for more than 15 seconds','The baby is hard to wake'],bn:['১৫ সেকেন্ডের বেশি শ্বাস থেমে থাকে','শিশুকে জাগানো কঠিন']}}
+];
+const TB=Object.fromEntries(TIPS.map(x=>[x.id,x]));
+
+const NOTI=[
+ {i:'bed',c:'var(--ok)',bg:'var(--ok-soft)',n:{en:'A NICU bed opened at Dhaka Shishu Hospital',bn:'ঢাকা শিশু হাসপাতালে একটি নিকু শয্যা খালি হয়েছে'},s:{en:'You saved this hospital · 4 min ago',bn:'আপনি এই হাসপাতাল সংরক্ষণ করেছেন · ৪ মিনিট আগে'},go:'hospital:dsh'},
+ {i:'tips',c:'var(--primary)',bg:'var(--primary-soft)',n:{en:'New tip: Winter is here, spot pneumonia early',bn:'নতুন পরামর্শ: শীত এসেছে, নিউমোনিয়ার লক্ষণ চিনুন'},s:{en:'Today',bn:'আজ'},go:'tip:t1'},
+ {i:'vaccine',c:'var(--accent)',bg:'var(--accent-soft)',n:{en:'Ayaan’s MR-1 vaccine is due in 4 weeks',bn:'৪ সপ্তাহ পর আয়ানের এমআর-১ টিকা'},s:{en:'Nearest EPI centre: Mirpur-2',bn:'নিকটতম ইপিআই কেন্দ্র: মিরপুর-২'},go:'tip:t3'}
+];
+
+/* ---------- logic ---------- */
+const st=(f,tot)=>f===0?'full':(f<=2||f/tot<=.12)?'few':'ok';
+const kmTxt=k=>n(k<20?k.toFixed(1):Math.round(k))+' '+t('km');
+const upd=h=>{const m=Math.floor((Date.now()-h.upd)/M);return m<1?t('justNow'):t('minAgo',{n:n(m)})};
+const fmtTime=s=>{const[hh,mm]=s.split(':').map(Number);if(S.lang==='bn'){const p=hh<12?'সকাল':hh<15?'দুপুর':hh<18?'বিকাল':hh<20?'সন্ধ্যা':'রাত';return p+' '+n((hh%12||12)+':'+String(mm).padStart(2,'0'))}return (hh%12||12)+':'+String(mm).padStart(2,'0')+(hh<12?' AM':' PM')};
+const DAYN={en:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],bn:['রবি','সোম','মঙ্গল','বুধ','বৃহঃ','শুক্র','শনি']};
+const MON={en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],bn:['জানু','ফেব্রু','মার্চ','এপ্রি','মে','জুন','জুলা','আগ','সেপ্টে','অক্টো','নভে','ডিসে']};
+const dayAt=i=>{const d=new Date();d.setDate(d.getDate()+i);return d};
+const totalFree=u=>H.reduce((a,h)=>a+(h.u[u]?h.u[u][0]:0),0);
+const greet=()=>{const h=new Date().getHours();return t(h<12?'gm':h<17?'ga':'ge')};
+const typeTag=h=>`<span class="tag">${t(h.type)}</span>`;
+
+function pill(h,u){const[f,tot]=h.u[u];const s=st(f,tot);return `<span class="pill s-${s}" data-pill="${h.id}:${u}"><b>${L(UNITS[u].n)}</b> ${n(f)}/${n(tot)}</span>`}
+function unitRow(h,u){const[f,tot]=h.u[u];const s=st(f,tot);const occ=Math.round((tot-f)/tot*100);
+ return `<div class="unit" data-row="${h.id}:${u}"><div class="unit-top"><div><div class="unit-name">${L(UNITS[u].n)}</div><div class="unit-desc">${L(UNITS[u].d)}</div></div><span class="pill s-${s}">${t(s)}</span></div>
+ <div class="unit-count"><span class="big">${n(f)}</span><span class="muted sm">${t('freeOf',{n:n(tot)})}</span><span class="muted sm" style="margin-left:auto">${t('occupied',{n:n(occ)})}</span></div>
+ <div class="bar s-${s}"><i style="width:${occ}%"></i></div></div>`}
+
+function hCard(h){const sv=S.saved.has(h.id);const units=S.unit!=='all'?[S.unit]:Object.keys(h.u);
+ return `<div class="hcard"><button class="hcard-top" style="text-align:left;padding-right:34px" data-a="go:hospital:${h.id}"><span class="avatar ${h.type!=='govt'?'pv':''}">${h.ab}</span><span class="hc-body"><h3>${L(h.n)}</h3><span class="meta">${ic('pin',14)}${L(h.a)} · ${kmTxt(h.km)}</span></span></button>
+ <div class="pills">${units.map(u=>pill(h,u)).join('')}</div>
+ <div class="meta" style="justify-content:space-between">${typeTag(h)}<span class="live" data-upd="${h.id}">${upd(h)}</span></div>
+ <button class="save" aria-label="Save" aria-pressed="${sv}" data-a="save:${h.id}">${ic('heart',20)}</button></div>`}
+
+function dCard(d){const h=HB[d.h];const free=d.slots.filter(s=>!d.off.includes(s));
+ const chip=d.today?`<span class="slot-chip">${ic('clock',14)}${t('today')}, ${fmtTime(free[0])}</span>`:`<span class="slot-chip later">${ic('clock',14)}${t('tomorrow')}, ${fmtTime(d.slots[0])}</span>`;
+ return `<button class="dcard" data-a="go:doctor:${d.id}"><span class="dav" style="background:${d.hue}">${d.ini}</span><span style="flex:1;min-width:0"><h3 style="font-family:var(--body);font-size:16px;font-weight:700">${L(d.n)}</h3><span class="meta">${L(SPEC[d.s])} · ${t('yrs',{n:n(d.exp)})}</span><span class="meta">${ic('hosp',14)}${L(h.n)}</span><span style="display:flex;justify-content:space-between;align-items:center">${chip}<span class="sm num" style="font-weight:600;margin-top:8px">${money(d.fee)}</span></span></span></button>`}
+
+function tCard(x){return `<button class="tcard" data-a="go:tip:${x.id}"><span class="tthumb tc-${x.c}">${ic(x.c,30,1.7)}</span><span style="flex:1;min-width:0"><span class="eyebrow">${L(TCAT[x.c])} · ${t('minRead',{n:n(x.min)})}</span><h3>${L(x.n)}</h3><span class="sm muted">${L(x.ago)}</span></span></button>`}
+
+/* ---------- screens ---------- */
+function splash(){return `<div class="splash"><span class="orb o1"></span><span class="orb o2"></span>
+ <div class="splash-main">${logo(76)}<h1>Ador<small>আদর</small></h1><div class="tagline">${t('tag')}</div><p>${t('splashSub')}</p></div>
+ <div class="splash-foot"><div class="eyebrow">${t('chooseLang')}</div>
+ <div class="seg"><button data-a="lang:en" aria-pressed="${S.lang==='en'}">English</button><button data-a="lang:bn" aria-pressed="${S.lang==='bn'}">বাংলা</button></div>
+ <button class="btn" data-a="start">${t('start')} ${ic('chev',18,2.4)}</button><div class="sm muted" style="text-align:center">${t('demo')}</div></div></div>`}
+
+function home(){const near=[...H].sort((a,b)=>a.km-b.km).slice(0,4);const tip=TIPS[0];const docs=D.filter(d=>d.today).slice(0,3);
+ return `<div class="scroll"><div class="topbar"><div class="brand">${logo(36)}${t('appName')}</div><div style="display:flex;gap:8px"><button class="iconbtn" aria-label="${t('notifications')}" data-a="go:notifs">${ic('bell')}<span class="dot"></span></button><button class="iconbtn" aria-label="${t('profile')}" data-a="tab:profile">${ic('user')}</button></div></div>
+ <div class="greet"><div class="muted">${greet()}, ${t('parent')}</div><h1>${t('howIs')}</h1></div>
+ <div class="pad"><button class="search" data-a="searchgo">${ic('search')}<span>${t('searchPh')}</span></button></div>
+ <button class="sos-card" data-a="go:emergency"><span class="ring">${ic('pulse',28,2.2)}</span><span style="position:relative"><h3>${t('sosTitle')}</h3><p>${t('sosSub')}</p></span></button>
+ <div class="section"><div class="sec-head"><h2>${t('liveBeds')}</h2><span class="live">Live</span></div>
+ <div class="stats" style="margin-top:0"><div class="stat"><div class="v" data-stat="nicu">${n(totalFree('nicu'))}</div><div class="k">${t('freeNicu')}</div></div><div class="stat"><div class="v" data-stat="picu">${n(totalFree('picu'))}</div><div class="k">${t('freePicu')}</div></div><div class="stat"><div class="v">${n(D.filter(d=>d.today).length)}</div><div class="k">${t('docsToday')}</div></div></div></div>
+ <div class="section"><div class="sec-head"><h2>${t('find')}</h2></div><div class="cats">
+  <button class="cat" data-a="unitgo:nicu"><span class="ico">${ic('bed',28,1.7)}</span>${L(UNITS.nicu.n)}</button>
+  <button class="cat" data-a="unitgo:picu"><span class="ico">${ic('pulse',28,1.7)}</span>${L(UNITS.picu.n)}</button>
+  <button class="cat" data-a="unitgo:scanu"><span class="ico">${ic('newborn',28,1.7)}</span>${L(UNITS.scanu.n)}</button>
+  <button class="cat" data-a="tab:doctors"><span class="ico">${ic('doc',28,1.7)}</span>${t('specialists')}</button></div></div>
+ <div class="section"><div class="sec-head"><h2>${t('nearYou')}</h2><button class="link" data-a="tab:hospitals">${t('seeAll')}</button></div>
+ <div class="hscroll">${near.map(h=>`<button class="mini" data-a="go:hospital:${h.id}"><span style="display:flex;gap:10px;align-items:center"><span class="avatar ${h.type!=='govt'?'pv':''}" style="width:40px;height:40px">${h.ab}</span><span style="min-width:0"><h3>${L(h.n)}</h3><span class="meta">${kmTxt(h.km)} · ${t(h.type)}</span></span></span><span class="pills">${Object.keys(h.u).slice(0,3).map(u=>pill(h,u)).join('')}</span></button>`).join('')}</div></div>
+ <div class="section"><div class="sec-head"><h2>${t('tipDay')}</h2><button class="link" data-a="tab:tips">${t('seeAll')}</button></div>
+ <button class="tip-hero" data-a="go:tip:${tip.id}"><span class="eyebrow">${L(TCAT[tip.c])} · ${t('minRead',{n:n(tip.min)})}</span><h3>${L(tip.n)}</h3><p>${L(tip.s)}</p><span class="big-ico">${ic(tip.c,120,1.4)}</span></button></div>
+ <div class="section" style="padding-bottom:20px"><div class="sec-head"><h2>${t('availToday')}</h2><button class="link" data-a="tab:doctors">${t('seeAll')}</button></div><div class="list">${docs.map(dCard).join('')}</div></div></div>`}
+
+function hospFiltered(){const q=S.q.trim().toLowerCase();return H.filter(h=>(S.div==='all'||h.div===S.div)&&(S.unit==='all'||h.u[S.unit])&&(!q||(h.n.en+h.n.bn+h.a.en+h.a.bn).toLowerCase().includes(q))).sort((a,b)=>a.km-b.km)}
+function hospList(){const r=hospFiltered();return `<div class="count-line"><span>${t('results',{n:n(r.length)})}</span><span>${t('nearestFirst')}</span></div>`+(r.length?`<div class="list" style="padding-bottom:20px">${r.map(hCard).join('')}</div>`:`<div class="empty">${t('noRes')}</div>`)}
+function hospitals(){return `<div class="scroll"><div class="screen-head" style="padding-top:14px"><h1>${t('hospitals')}</h1><div class="live">${t('hospSub')}</div></div>
+ <div class="pad"><label class="search">${ic('search')}<input id="hq" type="search" placeholder="${t('searchPh')}" value="${esc(S.q)}" autocomplete="off"></label></div>
+ <div class="chips" style="margin-top:12px">${DIVS.map(([k,v])=>`<button class="chip-btn" data-a="div:${k}" aria-pressed="${S.div===k}">${L(v)}</button>`).join('')}</div>
+ <div class="chips" style="margin-top:6px">${[['all',T.all],...Object.entries(UNITS).map(([k,v])=>[k,v.n])].map(([k,v])=>`<button class="chip-btn" data-a="unit:${k}" aria-pressed="${S.unit===k}">${L(v)}</button>`).join('')}</div>
+ <div id="hlist">${hospList()}</div></div>`}
+
+function hospital(id){const h=HB[id];const docs=D.filter(d=>d.h===id);const sv=S.saved.has(id);
+ return `<div class="scroll"><div class="topbar"><button class="iconbtn" aria-label="Back" data-a="back">${ic('back')}</button><div style="display:flex;gap:8px"><button class="iconbtn" aria-label="Share" data-a="share">${ic('share')}</button><button class="iconbtn save" style="position:static" aria-label="Save" aria-pressed="${sv}" data-a="save:${id}">${ic('heart')}</button></div></div>
+ <div class="d-hero"><span class="avatar ${h.type!=='govt'?'pv':''}" style="width:58px;height:58px;border-radius:18px;font-size:16px">${h.ab}</span><h1>${L(h.n)}</h1>
+ <div class="meta">${ic('pin',14)}${L(h.a)} · ${kmTxt(h.km)}</div><div class="meta" style="margin-top:6px">${typeTag(h)}<span style="display:inline-flex;gap:3px;align-items:center;color:var(--warn)">${ic('star',14)}</span>${n(h.r.toFixed(1))}</div></div>
+ <div class="actions"><button class="act" data-a="sheet:call:${id}">${ic('phone',22)}${t('call')}</button><a class="act" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(h.n.en+' '+h.a.en)}" target="_blank" rel="noopener">${ic('nav',22)}${t('directions')}</a><button class="act primary" data-a="sheet:req:${id}">${ic('bed',22)}${t('request')}</button></div>
+ <div class="section"><div class="sec-head"><h2>${t('bedsNow')}</h2><span class="live" data-upd="${id}">${upd(h)}</span></div><div class="units">${Object.keys(h.u).map(u=>unitRow(h,u)).join('')}</div></div>
+ ${docs.length?`<div class="section"><div class="sec-head"><h2>${t('docsHere')}</h2></div><div class="list">${docs.map(dCard).join('')}</div></div>`:''}
+ <div class="section"><div class="sec-head"><h2>${t('facilities')}</h2></div><div class="fac">${h.f.map(f=>`<span>${L(FAC[f])}</span>`).join('')}</div></div>
+ <div class="section" style="padding-bottom:24px"><div class="sec-head"><h2>${t('about')}</h2></div><div class="info"><div class="info-row">${ic('pulse')}${t('open247')}</div><div class="info-row">${ic('clock')}${t('visiting')}</div><div class="info-row">${ic('phone')}<span class="num">${n(h.phone)}</span></div></div></div></div>`}
+
+function docFiltered(){const q=S.dq.trim().toLowerCase();return D.filter(d=>(S.spec==='all'||d.s===S.spec)&&(!S.onlyToday||d.today)&&(!q||(d.n.en+d.n.bn+HB[d.h].n.en+HB[d.h].n.bn).toLowerCase().includes(q)))}
+function docList(){const r=docFiltered();return r.length?`<div class="list" style="padding:8px 16px 20px">${r.map(dCard).join('')}</div>`:`<div class="empty">${t('noRes')}</div>`}
+function doctors(){return `<div class="scroll"><div class="screen-head" style="padding-top:14px"><h1>${t('doctors')}</h1><div class="muted sm">${t('docSub')}</div></div>
+ <div class="pad"><label class="search">${ic('search')}<input id="dq" type="search" placeholder="${t('docSearch')}" value="${esc(S.dq)}" autocomplete="off"></label></div>
+ <div class="chips" style="margin-top:12px">${[['all',T.allSpec],...Object.entries(SPEC)].map(([k,v])=>`<button class="chip-btn" data-a="spec:${k}" aria-pressed="${S.spec===k}">${L(v)}</button>`).join('')}</div>
+ <div class="toggle-row"><span>${t('onlyToday')}</span><button class="switch" role="switch" aria-label="${t('onlyToday')}" aria-checked="${S.onlyToday}" data-a="onlytoday"></button></div>
+ <div id="dlist">${docList()}</div></div>`}
+
+function doctor(id){const d=DB[id];const h=HB[d.h];const start=d.today?0:1;
+ const days=[0,1,2,3,4].map(i=>{const dt=dayAt(i+start);return `<button class="day" data-a="day:${i}" aria-pressed="${S.day===i}"><span>${i+start===0?t('today'):DAYN[S.lang][dt.getDay()]}</span><b>${n(dt.getDate())}</b><span>${MON[S.lang][dt.getMonth()]}</span></button>`}).join('');
+ const off=S.day===0?d.off:[];
+ return `<div class="scroll"><div class="topbar"><button class="iconbtn" aria-label="Back" data-a="back">${ic('back')}</button><button class="iconbtn" aria-label="Share" data-a="share">${ic('share')}</button></div>
+ <div class="doc-hero"><div class="dav" style="background:${d.hue}">${d.ini}</div><h1>${L(d.n)}</h1><div class="muted">${L(SPEC[d.s])}</div><div class="sm muted" style="margin-top:2px">${d.deg}</div></div>
+ <div class="trio"><div><b>${n(d.exp)}+</b><span>${t('experience')}</span></div><div><b>${n(d.pt)}</b><span>${t('patients')}</span></div><div><b>${n(d.r.toFixed(1))}</b><span>${t('rating')}</span></div></div>
+ <div class="section"><div class="sec-head"><h2>${t('chamber')}</h2></div><button class="info" style="display:block;width:calc(100% - 32px);text-align:left" data-a="go:hospital:${h.id}"><div class="info-row">${ic('hosp')}<span style="flex:1">${L(h.n)}<br><span class="sm muted">${L(h.a)}</span></span>${ic('chev',18)}</div><div class="info-row">${ic('clock')}<span style="flex:1">${t('fee')}</span><b class="num">${money(d.fee)}</b></div></button></div>
+ <div class="section"><div class="sec-head"><h2>${t('pickDay')}</h2></div><div class="days">${days}</div></div>
+ <div class="section" style="padding-bottom:20px"><div class="sec-head"><h2>${t('pickTime')}</h2></div><div class="slots">${d.slots.map(s=>`<button class="slot" data-a="slot:${s.replace(':','-')}" aria-pressed="${S.slot===s}" ${off.includes(s)?'disabled':''}>${fmtTime(s)}</button>`).join('')}</div></div></div>
+ <div class="sticky-cta"><button class="btn" data-a="sheet:book:${id}" ${S.slot?'':'disabled'}>${S.slot?t('bookBtn')+' · '+fmtTime(S.slot):t('selectSlot')}</button></div>`}
+
+function tips(){const list=TIPS.filter(x=>S.tcat==='all'||x.c===S.tcat);const f=list[0];
+ return `<div class="scroll"><div class="screen-head" style="padding-top:14px"><h1>${t('tipsTitle')}</h1><div class="muted sm">${t('tipsSub')}</div></div>
+ <div class="chips" style="margin-bottom:14px">${[['all',T.allTopics],...Object.entries(TCAT)].map(([k,v])=>`<button class="chip-btn" data-a="tcat:${k}" aria-pressed="${S.tcat===k}">${L(v)}</button>`).join('')}</div>
+ ${f?`<button class="feature" data-a="go:tip:${f.id}"><span class="art tc-${f.c}">${ic(f.c,72,1.4)}</span><span class="txt" style="display:block"><span class="eyebrow">${L(TCAT[f.c])} · ${t('minRead',{n:n(f.min)})} · ${L(f.ago)}</span><h3>${L(f.n)}</h3><span class="muted sm">${L(f.s)}</span></span></button>`:''}
+ <div class="list" style="padding-bottom:20px">${list.slice(1).map(tCard).join('')}</div></div>`}
+
+function tip(id){const x=TB[id];const d=DB[x.by];const lk=S.liked.has(id);
+ return `<div class="scroll"><div class="topbar"><button class="iconbtn" aria-label="Back" data-a="back">${ic('back')}</button><button class="iconbtn" aria-label="Share" data-a="share">${ic('share')}</button></div>
+ <article class="article"><div class="art tc-${x.c}">${ic(x.c,84,1.3)}</div><span class="eyebrow">${L(TCAT[x.c])} · ${t('minRead',{n:n(x.min)})}</span><h1>${L(x.n)}</h1><p class="lede">${L(x.s)}</p>
+ <button class="byline" style="width:100%;text-align:left" data-a="go:doctor:${d.id}"><span class="dav" style="background:${d.hue}">${d.ini}</span><span style="flex:1"><span class="sm muted">${t('reviewedBy')}</span><br><b>${L(d.n)}</b> <span class="sm muted">· ${L(SPEC[d.s])}</span></span>${ic('chev',18)}</button>
+ <ol class="points">${L(x.p).map((p,i)=>`<li><i>${n(i+1)}</i><span>${p}</span></li>`).join('')}</ol>
+ <div class="warn-box"><h3>${ic('alert',18)}${t('seeDoctor')}</h3><ul>${L(x.w).map(w=>`<li>${w}</li>`).join('')}</ul></div>
+ <div style="display:flex;gap:10px;margin-top:16px"><button class="btn ${lk?'':'ghost'}" style="flex:1" data-a="like:${id}">${ic('heart',18)}${t('helpful')}</button><button class="btn accent" style="flex:1" data-a="go:emergency">${ic('pulse',18)}${t('emergency')}</button></div>
+ <p class="sm muted" style="margin-top:14px">${t('disclaimer')}</p></article></div>`}
+
+function emergency(){const near=H.filter(h=>h.u.nicu&&h.u.nicu[0]>0).sort((a,b)=>a.km-b.km).slice(0,3);
+ const steps={en:['Keep your baby warm, held skin-to-skin if possible','Keep breastfeeding if the baby can feed','Bring the health card and any medicines','Do not give anything by mouth if the baby is unconscious'],bn:['শিশুকে গরম রাখুন, সম্ভব হলে বুকে জড়িয়ে','শিশু খেতে পারলে বুকের দুধ চালিয়ে যান','স্বাস্থ্য কার্ড ও ওষুধ সঙ্গে নিন','শিশু অচেতন হলে মুখে কিছু দেবেন না']};
+ return `<div class="scroll"><div class="em-head"><button class="iconbtn" aria-label="Back" data-a="back">${ic('back')}</button><h1>${t('emTitle')}</h1><div style="opacity:.9">${t('emSub')}</div></div>
+ <div class="hotline"><div><div class="big">${n(999)}</div><div class="sm muted">${t('national')}</div></div><button class="copy-btn" data-a="copy:999">${ic('copy',16)}${t('copy')}</button></div>
+ <div class="hotline secondary"><div><div class="big">${n(16263)}</div><div class="sm muted">${t('healthLine')}</div></div><button class="copy-btn" data-a="copy:16263">${ic('copy',16)}${t('copy')}</button></div>
+ <div class="section"><div class="sec-head"><h2>${t('nearestFree')}</h2><span class="live">Live</span></div><div class="list">${near.map(h=>`<div class="hcard"><button class="hcard-top" style="text-align:left" data-a="go:hospital:${h.id}"><span class="avatar ${h.type!=='govt'?'pv':''}">${h.ab}</span><span class="hc-body"><h3>${L(h.n)}</h3><span class="meta">${kmTxt(h.km)} · ${L(h.a)}</span></span></button><div style="display:flex;justify-content:space-between;align-items:center;gap:8px">${pill(h,'nicu')}<span style="display:flex;gap:8px"><button class="copy-btn" style="margin:0" data-a="sheet:call:${h.id}">${ic('phone',16)}${t('call')}</button><button class="copy-btn" style="margin:0;background:var(--primary);color:var(--primary-ink)" data-a="sheet:req:${h.id}">${ic('bed',16)}${t('request')}</button></span></div></div>`).join('')}</div></div>
+ <div class="section" style="padding-bottom:24px"><div class="sec-head"><h2>${t('onTheWay')}</h2></div><ul class="steps">${L(steps).map(s=>`<li>${ic('check',18,2.4)}<span>${s}</span></li>`).join('')}</ul></div></div>`}
+
+function profile(){const sv=H.filter(h=>S.saved.has(h.id));
+ return `<div class="scroll"><div class="screen-head" style="padding-top:14px"><h1>${t('profile')}</h1></div>
+ <div class="pcard"><span class="dav" style="background:var(--accent-soft);color:var(--accent)">${S.lang==='bn'?'ঋ':'R'}</span><span><b style="font-size:17px">${t('parentFull')}</b><br><span class="sm muted">${t('parentRole')}</span></span></div>
+ <div class="child"><span class="dav">${ic('newborn',28,1.7)}</span><span style="flex:1"><span class="eyebrow">${t('myChild')}</span><br><b style="font-size:17px">${t('childName')}</b> <span class="sm muted">· ${t('childAge')}</span><br><span class="sm" style="color:var(--primary);font-weight:600">${t('nextVaccine')}</span></span></div>
+ <div class="section"><div class="sec-head"><h2>${t('language')}</h2></div><div class="pad"><div class="seg"><button data-a="lang:en" aria-pressed="${S.lang==='en'}">English</button><button data-a="lang:bn" aria-pressed="${S.lang==='bn'}">বাংলা</button></div></div></div>
+ <div class="section"><div class="settings"><div class="set-row"><span style="display:flex;gap:10px;align-items:center">${ic('bell')}${t('notifs')}</span><button class="switch" role="switch" aria-label="${t('notifs')}" aria-checked="${S.notif}" data-a="notif"></button></div><button class="set-row" style="width:100%;text-align:left" data-a="go:notifs"><span style="display:flex;gap:10px;align-items:center">${ic('pulse')}${t('notifications')}</span>${ic('chev',18)}</button></div></div>
+ <div class="section"><div class="sec-head"><h2>${t('saved')}</h2></div>${sv.length?`<div class="list">${sv.map(hCard).join('')}</div>`:`<div class="notice">${t('noSaved')}</div>`}</div>
+ <div class="section" style="padding-bottom:24px"><div class="sec-head"><h2>${t('aboutApp')}</h2></div><div class="notice">${t('aboutTxt')}</div></div></div>`}
+
+function notifs(){return `<div class="scroll"><div class="topbar"><button class="iconbtn" aria-label="Back" data-a="back">${ic('back')}</button></div><div class="screen-head"><h1>${t('notifications')}</h1></div>
+ <div class="info" style="padding:0">${NOTI.map(x=>`<button class="nrow" data-a="go:${x.go}"><span class="nico" style="background:${x.bg};color:${x.c}">${ic(x.i)}</span><span style="flex:1"><b style="font-size:14.5px">${L(x.n)}</b><br><span class="sm muted">${L(x.s)}</span></span></button>`).join('')}</div></div>`}
+
+/* ---------- sheets ---------- */
+function sheet(){const s=S.sheet;if(!s)return '';let body='';
+ if(s.type==='call'){const h=HB[s.id];body=`<h2>${t('callTitle',{h:L(h.n)})}</h2><div class="hotline secondary" style="margin:14px 0 0"><div><div class="big" style="font-size:24px">${n(h.phone)}</div><div class="sm muted">${t('open247')}</div></div><button class="copy-btn" data-a="copy:${h.phone}">${ic('copy',16)}${t('copy')}</button></div><p class="sm muted">${t('callNote')}</p><button class="btn ghost" data-a="close">${t('done')}</button>`}
+ if(s.type==='req'){const h=HB[s.id];const us=Object.keys(h.u);const def=us.find(u=>h.u[u][0]>0)||us[0];
+  if(s.done){body=`<div class="success"><div class="tick">${ic('check',36,2.6)}</div><h2>${t('reqDone')}</h2><p class="muted">${t('reqDoneTxt',{h:L(h.n),u:L(UNITS[s.unit].n)})}</p><div class="summary"><div><span>${t('ref')}</span><b class="num">${n(s.ref)}</b></div><div><span>${t('fChild')}</span><b>${esc(s.child)}</b></div><div><span>${t('fUnit')}</span><b>${L(UNITS[s.unit].n)}</b></div></div><p class="sm muted">${t('demoNote')}</p><button class="btn" data-a="close">${t('done')}</button></div>`}
+  else body=`<h2>${t('reqTitle')}</h2><p class="muted sm" style="margin:4px 0 0">${L(h.n)} · ${t('reqSub')}</p><form id="reqform">
+  <div class="row2"><div class="field"><label for="rq-child">${t('fChild')}</label><input id="rq-child" required value="${t('childName')}"></div><div class="field"><label for="rq-age">${t('fAge')}</label><input id="rq-age" value="${S.lang==='bn'?'৮ মাস':'8 months'}"></div></div>
+  <div class="field"><label for="rq-unit">${t('fUnit')}</label><select id="rq-unit">${us.map(u=>`<option value="${u}" ${u===def?'selected':''}>${L(UNITS[u].n)} · ${n(h.u[u][0])} ${S.lang==='bn'?'খালি':'free'}</option>`).join('')}</select></div>
+  <div class="field"><label for="rq-phone">${t('fPhone')}</label><input id="rq-phone" type="tel" required value="${n('+880 1712-000123')}"></div>
+  <div class="field"><label for="rq-note">${t('fNote')}</label><textarea id="rq-note" placeholder="${t('notePh')}"></textarea></div>
+  <button class="btn" type="submit" style="margin-top:16px">${ic('send',18)}${t('send')}</button></form>`}
+ if(s.type==='book'){const d=DB[s.id];const h=HB[d.h];const start=d.today?0:1;const dt=dayAt(S.day+start);const dl=(S.day+start===0?t('today'):DAYN[S.lang][dt.getDay()])+', '+n(dt.getDate())+' '+MON[S.lang][dt.getMonth()];
+  if(s.done){body=`<div class="success"><div class="tick">${ic('check',36,2.6)}</div><h2>${t('bookedTitle')}</h2><div class="summary"><div><span>${t('serial')}</span><b class="num">${n(s.serial)}</b></div><div><span>${t('doctor')}</span><b>${L(d.n)}</b></div><div><span>${t('when')}</span><b>${dl} · ${fmtTime(S.slot)}</b></div></div><p class="sm muted">${t('arrive')}</p><p class="sm muted">${t('demoNote')}</p><button class="btn" data-a="closebook">${t('done')}</button></div>`}
+  else body=`<h2>${t('confirmTitle')}</h2><div class="summary"><div><span>${t('doctor')}</span><b>${L(d.n)}</b></div><div><span>${t('when')}</span><b>${dl} · ${fmtTime(S.slot)}</b></div><div><span>${t('where')}</span><b style="text-align:right">${L(h.n)}</b></div><div><span>${t('patient')}</span><b>${t('childName')} · ${t('childAge').split(' · ')[0]}</b></div><div><span>${t('fee')}</span><b class="num">${money(d.fee)}</b></div></div><div style="display:grid;grid-template-columns:1fr 2fr;gap:10px"><button class="btn ghost" data-a="close">${t('cancel')}</button><button class="btn" data-a="confirmbook">${t('confirm')}</button></div>`}
+ return `<div class="scrim" data-a="scrim"><div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>${body}</div></div>`}
+
+/* ---------- render ---------- */
+const app=document.getElementById('app');
+function view(){if(!S.started)return splash();const top=S.stack[S.stack.length-1];
+ if(top){const[s,p]=top;return ({hospital,doctor,tip,emergency,notifs})[s](p)}
+ return ({home,hospitals,doctors,tips,profile})[S.tab]()}
+function tabbar(){if(!S.started||S.stack.length)return '';const tb=(k,i)=>`<button class="tab" data-a="tab:${k}" ${S.tab===k?'aria-current="page"':''}>${ic(i,23)}${t(k==='hospitals'?'hospitals':k)}</button>`;
+ return `<nav class="tabbar">${tb('home','home')}${tb('hospitals','hosp')}<button class="tab-sos" data-a="go:emergency"><span class="c">${ic('pulse',26,2.3)}</span>${t('sos')}</button>${tb('doctors','doc')}${tb('tips','tips')}</nav>`}
+function render(keep){const sc=app.querySelector('.scroll');const y=keep&&sc?sc.scrollTop:0;
+ document.documentElement.lang=S.lang;
+ app.innerHTML=view()+tabbar()+sheet()+(S.toast?`<div class="toast" role="status">${ic('check',18,2.4)}${S.toast}</div>`:'');
+ const ns=app.querySelector('.scroll');if(ns)ns.scrollTop=y;renderSide()}
+function renderSide(){document.getElementById('side').innerHTML=`<h1>${logo(56)}Ador</h1><div class="bn">আদর</div><p>${t('tag')}. ${t('demo')}.</p>
+ <div class="seg"><button data-a="lang:en" aria-pressed="${S.lang==='en'}">English</button><button data-a="lang:bn" aria-pressed="${S.lang==='bn'}">বাংলা</button></div>
+ <div class="eyebrow" style="margin-top:22px">${t('tryTitle')}</div><ul>${['try1','try2','try3','try4','try5'].map((k,i)=>`<li><i>${n(i+1)}</i>${t(k)}</li>`).join('')}</ul>
+ <div class="eyebrow">${t('legend')}</div><div class="legend"><span class="pill s-ok">${t('ok')}</span><span class="pill s-few">${t('few')}</span><span class="pill s-full">${t('full')}</span></div>`}
+let toastT;function toast(m){S.toast=m;render(true);clearTimeout(toastT);toastT=setTimeout(()=>{S.toast=null;const el=app.querySelector('.toast');if(el)el.remove()},2200)}
+function copyNum(v){const done=()=>toast(t('copied'));try{navigator.clipboard.writeText(v).then(done,done)}catch(e){done()}}
+
+const A={
+ start(){S.started=true;try{localStorage.setItem('ador-started','1')}catch(e){}render()},
+ lang(v){S.lang=v;try{localStorage.setItem('ador-lang',v)}catch(e){}render(true)},
+ tab(v){S.tab=v;S.stack=[];render()},
+ go(s,p){if(s==='doctor'){S.day=0;S.slot=null}S.stack.push([s,p]);S.sheet=null;render()},
+ back(){S.stack.pop();render()},
+ searchgo(){S.tab='hospitals';S.stack=[];render();setTimeout(()=>{const i=document.getElementById('hq');if(i)i.focus()},50)},
+ unitgo(v){S.unit=v;S.div='all';S.tab='hospitals';S.stack=[];render()},
+ div(v){S.div=v;render(true)},unit(v){S.unit=v;render(true)},spec(v){S.spec=v;render(true)},tcat(v){S.tcat=v;render(true)},
+ onlytoday(){S.onlyToday=!S.onlyToday;render(true)},notif(){S.notif=!S.notif;render(true)},
+ save(v){if(S.saved.has(v)){S.saved.delete(v);toast(t('unsavedToast'))}else{S.saved.add(v);toast(t('savedToast'))}},
+ like(v){if(!S.liked.has(v)){S.liked.add(v);toast(t('markedHelpful'))}else{S.liked.delete(v);render(true)}},
+ share(){toast(t('linkCopied'))},
+ copy(v){copyNum(v)},
+ day(v){S.day=+v;S.slot=null;render(true)},
+ slot(v){S.slot=v.replace('-',':');render(true)},
+ sheet(type,id){S.sheet={type,id};render(true)},
+ close(){S.sheet=null;render(true)},
+ scrim(v,w,el,e){if(e.target===el){S.sheet=null;render(true)}},
+ confirmbook(){S.sheet.done=true;S.sheet.serial=Math.floor(Math.random()*18)+4;render(true)},
+ closebook(){S.sheet=null;S.slot=null;S.stack.pop();render()}
+};
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el)return;const parts=el.dataset.a.split(':');const a=parts.shift();
+ if(a==='copy'){A.copy(parts.join(':'));return}
+ if(A[a]){A[a](parts[0],parts[1],el,e)}});
+document.addEventListener('input',e=>{if(e.target.id==='hq'){S.q=e.target.value;document.getElementById('hlist').innerHTML=hospList()}
+ if(e.target.id==='dq'){S.dq=e.target.value;document.getElementById('dlist').innerHTML=docList()}});
+document.addEventListener('submit',e=>{e.preventDefault();if(e.target.id==='reqform'){const child=document.getElementById('rq-child').value||t('childName');const unit=document.getElementById('rq-unit').value;
+ Object.assign(S.sheet,{done:true,child,unit,ref:'ADR-'+(4000+Math.floor(Math.random()*5000))});render(true)}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.sheet){S.sheet=null;render(true)}});
+
+/* ---------- live simulation ---------- */
+setInterval(()=>{if(!S.started)return;
+ const h=H[Math.floor(Math.random()*H.length)];const us=Object.keys(h.u);const u=us[Math.floor(Math.random()*us.length)];const v=h.u[u];
+ const d=Math.random()<.5?-1:1;v[0]=Math.max(0,Math.min(v[1],v[0]+d));h.upd=Date.now();
+ if(S.sheet)return;
+ document.querySelectorAll(`[data-pill="${h.id}:${u}"]`).forEach(el=>{const w=document.createElement('span');w.innerHTML=pill(h,u);const ne=w.firstChild;ne.classList.add('flash');el.replaceWith(ne)});
+ document.querySelectorAll(`[data-row="${h.id}:${u}"]`).forEach(el=>{const w=document.createElement('div');w.innerHTML=unitRow(h,u);const ne=w.firstChild;ne.classList.add('flash');el.replaceWith(ne)});
+ document.querySelectorAll('[data-upd]').forEach(el=>{el.textContent=upd(HB[el.dataset.upd])});
+ document.querySelectorAll('[data-stat]').forEach(el=>{el.textContent=n(totalFree(el.dataset.stat))});
+},5000);
+setInterval(()=>{const c=document.getElementById('clock');if(c){const d=new Date();c.textContent=d.getHours()%12||12;c.textContent+=':'+String(d.getMinutes()).padStart(2,'0')}},10000);
+(()=>{const c=document.getElementById('clock');const d=new Date();c.textContent=(d.getHours()%12||12)+':'+String(d.getMinutes()).padStart(2,'0')})();
+render();
+</script>
+
+</body></html>
